@@ -72,7 +72,9 @@ package src
 		//	trace("saving so" + so);
 			so = SharedObject.getLocal("highscore");
 			so.data.highestWave = highestWave;	
+			so.flush(10000);
 			so.close();
+			
 		}
 		private function init(e:Event):void 
 		{
