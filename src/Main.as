@@ -11,7 +11,7 @@ package src
 	import flash.events.TouchEvent;
 	import flash.ui.MultitouchInputMode;
 	import flash.ui.Multitouch;
-	
+	import flash.net.SharedObject;
 	/**
 	 * ...
 	 * @author erwin henraat
@@ -33,7 +33,7 @@ package src
 		private var highestWave:int = 1;
 		private var gameEnded:Boolean = false;
 		public var combo:Combobar;
-		
+		private var so:SharedObject;
 		
 		private var _fingerPos:Point;
 		public function get fingerPos():Point
@@ -46,14 +46,41 @@ package src
 			this.addEventListener(Event.ADDED_TO_STAGE, init);
 			
 			
+			
 			Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
 		}		
-		
+		private function getHighScore():void
+		{
+			so = SharedObject.getLocal("highscore");
+			
+			if (so.data.highestWave == undefined)
+			{
+				so.data.highestWave = 1;
+				
+			}else
+			{
+				highestWave = so.data.highestWave;
+				
+			}
+			//trace("loaded so" + so);
+			so.close();
+			
+			
+		}
+		private function saveHighScore():void
+		{
+		//	trace("saving so" + so);
+			so = SharedObject.getLocal("highscore");
+			so.data.highestWave = highestWave;	
+			so.close();
+		}
 		private function init(e:Event):void 
 		{
+			
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			_fingerPos = new Point(stage.stageWidth / 2, stage.stageHeight / 2);
 			
+			getHighScore();
 			
 			initGame();			
 		}
@@ -409,6 +436,7 @@ package src
 				}			
 				if (plane == null && !gameEnded)
 				{	
+										
 					gameEnded = true;
 				//	trace("dood")
 					//removeEventListener(Event.ENTER_FRAME, loop);	
@@ -425,6 +453,10 @@ package src
 		private function destroyGame(e:TimerEvent):void 
 		{		
 			if (wave > highestWave) highestWave = wave;
+			
+			//save highscore in shared object.
+			saveHighScore();
+		
 			
 			var timer:Timer = e.target as Timer;
 			timer.removeEventListener(TimerEvent.TIMER_COMPLETE, initGame);
