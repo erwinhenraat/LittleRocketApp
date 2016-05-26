@@ -9,6 +9,8 @@ package src
 	import flash.events.Event;
 	import flash.utils.Timer;
 	import flash.events.TimerEvent;
+	import flash.events.KeyboardEvent;
+	import flash.ui.Keyboard;
 	/**
 	 * ...
 	 * @author erwin henraat
@@ -30,16 +32,49 @@ package src
 		private var aantalIcons:Number;
 		private var numReached:int;
 		private var middle:Number;
+	
 		
 		
 		public function Combobar($main:Main) 
 		{
 			main = $main;
 			y = main.stage.stageHeight - 20;
-			main.addChild(this);		
+			//main.addChild(this);		
 			//initBar();			
 			
+			this.addEventListener(Event.ADDED_TO_STAGE, init);
+			
 		}			
+		
+		private function init(e:Event):void 
+		{
+			removeEventListener(Event.ADDED_TO_STAGE, init);
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, onReleaseKey);
+		}
+		
+		private function onReleaseKey(e:KeyboardEvent):void 
+		{
+			trace("releasse");
+			switch(e.keyCode)
+			{
+				case Keyboard.W:
+					powerupWingmen();
+					break;
+				case Keyboard.Q:
+					powerupShrink();
+					break;
+				case Keyboard.E:
+					powerupMagnet();
+					break;
+				case Keyboard.R:
+					powerupRapidInsanity();
+					break;
+				case Keyboard.T:
+					powerupShield();
+					break;
+				
+			}
+		}
 		private function initBar():void 
 		{
 			var timer:Timer = new Timer(100, 100);
@@ -246,6 +281,44 @@ package src
 				else{removeEventListener(Event.ENTER_FRAME, handlePickupAnimation);}
 			}
 		}
+		
+		private function powerupWingmen():void
+		{
+			if(main.wingmen.length == 0)main.wingmen.push(new Wingman(main, 0, main.stage.stageHeight));
+			if (main.wingmen.length == 1)
+			{
+				if (main.wingmen[0].x < main.plane.x)
+				{
+					main.wingmen.push(new Wingman(main, main.stage.stageWidth, main.stage.stageHeight));
+				}else
+				{
+					main.wingmen.push(new Wingman(main, 0, main.stage.stageHeight))
+				}
+			}
+			
+		}		
+		private function powerupShrink():void 
+		{
+			main.plane.shrink(20000);	
+		}
+		private function powerupMagnet():void 
+		{
+			main.plane.fireMagnet();
+		}
+		
+		private function powerupRapidInsanity():void 
+		{
+			main.plane.activate45Angle(160);
+			main.plane.activate90Angle(160);
+			main.plane.activate180Angle(80);
+			main.plane.activateRapid(80);
+			main.plane.activateDouble(160);
+		}
+		
+		private function powerupShield():void 
+		{
+			if(!main.plane.shielded)main.plane.activateShield();
+		}
 		public function moveToPlayer():void
 		{
 			largeSuperUp.x -= ((largeSuperUp.x+x) - main.plane.x) / 6;
@@ -258,38 +331,21 @@ package src
 				switch(superupLabel)
 				{
 					case "double":
-					{
-						
-						if(main.wingmen.length == 0)main.wingmen.push(new Wingman(main, 0, main.stage.stageHeight));
-						if (main.wingmen.length == 1)
-						{
-							if (main.wingmen[0].x < main.plane.x)
-							{
-								main.wingmen.push(new Wingman(main, main.stage.stageWidth, main.stage.stageHeight));
-							}else
-							{
-								main.wingmen.push(new Wingman(main, 0, main.stage.stageHeight))
-							}
-						}
-						
-					}
+						powerupWingmen();					
 					//filter.color = 0xFFBBBB;
-					break;
+						break;
 					case "45angle":
-					main.plane.shrink(20000);
-					//filter.color = 0x61B9CC;
-					break;
+						powerupShrink();
+						//filter.color = 0x61B9CC;
+						break;
 					case "90angle":
-					main.plane.fireMagnet();						
+						powerupMagnet();
+												
 					//filter.color = 0x61B9CC;
-					break;
+						break;
 					case "rapid":					
-				
-					main.plane.activate45Angle(160);
-					main.plane.activate90Angle(160);
-					main.plane.activate180Angle(80);
-					main.plane.activateRapid(80);
-					main.plane.activateDouble(160);
+						powerupRapidInsanity();
+					
 					//filter.color = 0xEEC76C;
 					break;
 					case "special":
@@ -297,13 +353,19 @@ package src
 					//filter.color = 0xDF9EE2;
 					break;
 					case "shield":
-					if(!main.plane.shielded)main.plane.activateShield();
+						powerupShield();
+		
 					break;
 				}	
 					//main.plane.filters = [filter];									
 			}
 			
 		}
+		
+		
+		
+		
+		
 		/*
 		public function moveToPlayer(e:Event)
 		{

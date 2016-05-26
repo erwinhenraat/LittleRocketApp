@@ -22,7 +22,7 @@ package src
 		public var ySpeed:Number;
 		public var invulnerable:Boolean;
 		
-		private var lives:int;
+		private var lives:int = 2;
 		private var frozen:Boolean = false;
 		public function loseLife():void
 		{			
@@ -78,7 +78,7 @@ package src
 			main.addChild(pijltje);
 			invulnerable = true;
 			
-			lives = 10;
+			//lives = 10; 
 		}
 		public function update()
 		{	

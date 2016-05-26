@@ -139,7 +139,8 @@ package src
 			newWave();
 			addChild(ui);		
 			
-			combo = new Combobar(this);			
+			combo = new Combobar(this);	
+			addChild(combo);
 			
 			
 		}
