@@ -9,9 +9,6 @@ package src
 	import flash.text.TextField;
 	import flash.utils.Timer;
 	import flash.events.TimerEvent;
-//	import flash.events.TouchEvent;
-//	import flash.ui.MultitouchInputMode;
-//	import flash.ui.Multitouch;
 	import flash.net.SharedObject;
 	/**
 	 * ...
@@ -463,7 +460,7 @@ package src
 			if (wave > highestWave) highestWave = wave;
 			
 			//save highscore in shared object.
-			saveHighScore();
+			//saveHighScore();
 		
 			
 			var timer:Timer = e.target as Timer;
