@@ -17,7 +17,7 @@ package src
 		{
 			main = $main;
 			var snd:Sound = new SparkSound();
-			channel = snd.play(Math.ceil(Math.random() * 3000), 8);
+			channel = snd.play(Math.ceil(Math.random() * 1000), 10);
 			
 			var time:Timer = new Timer($milisecs, 1);
 			time.addEventListener(TimerEvent.TIMER_COMPLETE, deactivate);

@@ -17,8 +17,9 @@ package src
 	 * 11 - beam audio loopen - v
 	 * 
 	 * 12 - tussenlaag sneller - v
-	 * 13 - beam ipv faden horizontaal plat
+	 * 13 - beam ipv faden horizontaal plat - v
 	 * 14 - laser pas verwijderen 1 frame nadat het een enemy raakt
+	 * 15 - on death 3 letters invullen top 10
 	 * 
 	 * */
 	
@@ -559,7 +560,7 @@ package src
 			if (wave > highestWave) highestWave = wave;
 			
 			//save highscore in shared object.
-			//saveHighScore();
+			saveHighScore();
 			
 			var timer:Timer = e.target as Timer;
 			timer.removeEventListener(TimerEvent.TIMER_COMPLETE, initGame);

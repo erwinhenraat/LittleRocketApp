@@ -17,7 +17,7 @@ package src
 		
 		private var pijltje:MovieClip;
 		
-		private var s:Shape;
+		protected var s:Shape;
 		public var xSpeed:Number;
 		public var ySpeed:Number;
 		public var invulnerable:Boolean;

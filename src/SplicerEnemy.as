@@ -18,7 +18,7 @@ package src
 			main = $main; 			
 			gotoAndStop(2);
 			animation.gotoAndPlay(Math.ceil(Math.random() * framesLoaded));
-		
+			addChild(s);
 		}
 		public function splitUp()
 		{		
