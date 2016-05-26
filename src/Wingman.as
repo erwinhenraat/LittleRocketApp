@@ -9,6 +9,7 @@ package src
 	public class Wingman extends Plane
 	{		
 		private var side:String;
+		private var distanceFromPlayer:int = 45;
 		public var invulnerable:Boolean;
 		public function Wingman($main:Main, $x:Number, $y:Number) 
 		{
@@ -41,7 +42,7 @@ package src
 		{
 			var dx:Number = x - main.plane.x;
 			
-			if (dx > 45 || dx < -45)
+			if (dx > distanceFromPlayer || dx < -distanceFromPlayer)
 			{				
 				x += (main.plane.x - x)/5;
 			}

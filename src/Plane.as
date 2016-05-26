@@ -140,7 +140,7 @@ package src
 				main.wingmen[i].shoot();
 			}
 			reloading = true;
-			var reloadTimer:Timer = new Timer(400, 1); //tweakpunt 4: "Snelheid waarmee het schip normale kogels schiet."
+			var reloadTimer:Timer = new Timer(100, 1); //tweakpunt 4: "Snelheid waarmee het schip normale kogels schiet."
 			reloadTimer.addEventListener(TimerEvent.TIMER_COMPLETE, reload);				
 			
 			var l:Laser;				
@@ -149,7 +149,7 @@ package src
 			{
 				rapidShotsLeft--;
 				l = new libRapidLaser();
-				reloadTimer.delay = 150; //tweaken 5: "Snelheid waarmee het schip snelle kogels schiet."
+				reloadTimer.delay = 30; //tweaken 5: "Snelheid waarmee het schip snelle kogels schiet."
 			} 
 			else
 			{

@@ -1,5 +1,18 @@
 package src 
 {
+	
+	/*todo
+	 * 
+	 * 1-wingmen spacen
+	 * 2-powerups baseren op tijd
+	 * 3-meer enemies spawnen
+	 * 
+	 * 
+	 * 
+	 * */
+	
+	
+	
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.events.Event;
@@ -10,6 +23,7 @@ package src
 	import flash.utils.Timer;
 	import flash.events.TimerEvent;
 	import flash.net.SharedObject;
+	import flash.ui.Mouse;
 	/**
 	 * ...
 	 * @author erwin henraat
@@ -32,12 +46,21 @@ package src
 		private var gameEnded:Boolean = false;
 		public var combo:Combobar;
 		private var so:SharedObject;
+		private var cf = 0;
+		private var framesToShake:int;
+		private var _shakeIntensity:int;
+		
 		
 		private var _fingerPos:Point;
 		public function get fingerPos():Point
 		{
 			return _fingerPos;
 			
+		}
+		private function keepInScreen(obj:MovieClip):void
+		{
+			if (obj.x < 0) obj.x = 0;
+			if (obj.x > stage.stageWidth) obj.x = stage.stageWidth;
 		}
 		public function Main() 
 		{		
@@ -76,7 +99,7 @@ package src
 		}
 		private function init(e:Event):void 
 		{
-			
+			Mouse.hide();
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			_fingerPos = new Point(stage.stageWidth / 2, stage.stageHeight / 2);
 			
@@ -94,6 +117,8 @@ package src
 			gameEnded = false;
 			wave = 1;
 			space = new Level(this);
+	
+			
 			
 			plane = new Plane(this, stage.stageWidth/2, stage.stageHeight ); //tweakpunt 2: "Beginpositie van het schip."
 			ui = new UserInterface();			
@@ -162,6 +187,8 @@ package src
 				var xpos:Number;
 				var ypos:Number;
 				var e:Enemy = new Enemy(this);
+				
+				e.addEventListener(Enemy.ENEMY_DIES, onEnemyDeath);
 				enemies.push(e);
 				if(wave < 10)
 				{					
@@ -236,12 +263,13 @@ package src
 				addChild(e);	
 				addChild(ui);
 			}
-		}
+		}	
 		private function spawnSplicers(number:int):void 
 		{		
 			for (var i:int = 0; i < number; i++) 
 			{
 				var e:SplicerEnemy = new SplicerEnemy(this);
+				e.addEventListener(Enemy.ENEMY_DIES, onEnemyDeath);
 				enemies.push(e);
 				addChild(e);	
 				e.x = 10+Math.round(Math.random() * stage.stageWidth-20);
@@ -253,13 +281,44 @@ package src
 			}			
 			addChild(ui)
 		}
+		private function onEnemyDeath(e:Event):void 
+		{		
+			var enemy : Enemy = e.target as Enemy;
+			enemy.removeEventListener(Enemy.ENEMY_DIES, onEnemyDeath);
+			shake(2,20);
+			
+		}
+		public function shake(frames:int = 3, intensity:int = 45):void
+		{
+			addEventListener(Event.ENTER_FRAME, onFrame);
+			cf = 0;
+			framesToShake = frames;
+			_shakeIntensity = intensity;
+		}		
+		private function onFrame(e:Event):void 
+		{
+			this.y = -_shakeIntensity + Math.random() * 2 * _shakeIntensity;						
+			space.y = -this.y;
+			cf++;
+			if (cf == framesToShake) {
+				removeEventListener(Event.ENTER_FRAME, onFrame);
+				this.y = 0;		
+				space.y = 0;
+			}
+		}
+		
 		private function loop(e:Event):void 
 		{
 			_fingerPos.x = mouseX;
 			_fingerPos.y = mouseY;
 			
+			//keep shiut in screen
 			//update ui
-			if (plane != null)ui.update(plane.doubleShotsLeft, plane.rapidShotsLeft, plane.angle45ShotsLeft, plane.angle90ShotsLeft, wave, highestWave);
+			if (plane != null) {
+				keepInScreen(plane);
+			
+				ui.update(plane.doubleShotsLeft, plane.rapidShotsLeft, plane.angle45ShotsLeft, plane.angle90ShotsLeft, wave, highestWave);
+			}
 						
 			//update powerups
 			if (powerup != null)
@@ -324,7 +383,8 @@ package src
 				{
 					if (special.hitTestPoint(enemies[j].x, enemies[j].y, true))
 					{
-						enemies[j].mustDie = true;
+						enemies[j].loseLife();
+						//enemies[j].mustDie = true;
 					}
 				}					
 				//kill player if it hits enemy
@@ -375,7 +435,8 @@ package src
 						else if (enemies[j].hitTestPoint(lasers[k].x, lasers[k].y, true)||enemies[j].hitTestPoint(lasers[k].x, lasers[k].y-lasers[k].height, true))
 						{	
 							
-							enemies[j].mustDie = true;							
+							//enemies[j].mustDie = true;							
+							enemies[j].loseLife();							
 							lasers[k].toRemove = true;
 						}
 												

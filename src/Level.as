@@ -1,6 +1,7 @@
 package src 
 {
 	import flash.display.MovieClip;
+	import flash.events.Event;
 	/**
 	 * ...
 	 * @author erwin henraat
@@ -11,6 +12,7 @@ package src
 		private var main:Main;
 		private var bg:MovieClip;
 		private var stars:Array = new Array();
+	
 		
 		public function Level($main:Main) 
 		{
@@ -71,6 +73,8 @@ package src
 			}
 			
 		}
+		
+		
 		
 	}
 

@@ -18,7 +18,7 @@ package src
 		{	
 		
 		}
-		public function init( $rot:Number = 0,$pan:Number = 0, $speed:Number = 20)
+		public function init( $rot:Number = 0,$pan:Number = 0, $speed:Number = 60)
 		{
 			var sound:Sound = new LaserSound();
 			var channel:SoundChannel = sound.play(Math.ceil(Math.random() * 50),0,new SoundTransform(1,$pan));
