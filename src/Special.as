@@ -17,7 +17,7 @@ package src
 		{
 			main = $main;
 			var snd:Sound = new SparkSound();
-			channel = snd.play(Math.ceil(Math.random() * 3000), 3);
+			channel = snd.play(Math.ceil(Math.random() * 3000), 8);
 			
 			var time:Timer = new Timer($milisecs, 1);
 			time.addEventListener(TimerEvent.TIMER_COMPLETE, deactivate);
@@ -41,7 +41,9 @@ package src
 		}		
 		private function fadeOut(e:TimerEvent):void 
 		{
-			alpha -= 0.1;
+			//alpha -= 0.1;
+			
+			this.scaleX -= 0.1;
 		}		
 		public function activate()
 		{
@@ -67,6 +69,7 @@ package src
 			main.special.channel.stop();
 			main.removeChild(main.special);
 			main.special = null;
+			main.plane.specialActive = false;
 		}
 		
 	}

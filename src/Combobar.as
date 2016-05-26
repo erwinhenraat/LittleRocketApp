@@ -54,7 +54,7 @@ package src
 		
 		private function onReleaseKey(e:KeyboardEvent):void 
 		{
-			trace("releasse");
+			//trace("releasse");
 			switch(e.keyCode)
 			{
 				case Keyboard.W:
@@ -308,11 +308,11 @@ package src
 		
 		private function powerupRapidInsanity():void 
 		{
-			main.plane.activate45Angle(160);
-			main.plane.activate90Angle(160);
-			main.plane.activate180Angle(80);
-			main.plane.activateRapid(80);
-			main.plane.activateDouble(160);
+			main.plane.activate45Angle(160, true);
+			main.plane.activate90Angle(160, true);
+			main.plane.activate180Angle(80, true);
+			main.plane.activateRapid(80, true);
+			main.plane.activateDouble(160, true);
 		}
 		
 		private function powerupShield():void 

@@ -26,7 +26,7 @@ package src
 				addChild(panels[j]);
 			}
 			
-			for (var i:int = 0; i < (5+Math.ceil(Math.random()*2)); i++) 
+			for (var i:int = 0; i < (10+Math.ceil(Math.random()*20)); i++) 
 			{
 				newStar();
 				stars[i].y = Math.random() * main.stage.stageHeight;
@@ -36,7 +36,7 @@ package src
 		{
 			var star:MovieClip = new libStar();
 			star.alpha = 0.3 + ((Math.random()*7)/ 10);
-			star.speed = 5+ Math.random()*5//8+Math.ceil(Math.random() * 10);
+			star.speed = 5+ Math.random()*15//8+Math.ceil(Math.random() * 10);
 			star.scaleY = 0.5 + Math.random();
 			stars.push(star);
 			star.x = Math.random() * main.stage.stageWidth;

@@ -22,7 +22,7 @@ package src
 		public var ySpeed:Number;
 		public var invulnerable:Boolean;
 		
-		private var lives:int = 2;
+		private var lives:int = 6;
 		private var frozen:Boolean = false;
 		public function loseLife():void
 		{			

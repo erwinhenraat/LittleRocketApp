@@ -30,6 +30,7 @@ package src
 		private var pan:Number= 0;
 		private var sizeModifier:Number = 1;
 		private var shrinkTimer = new Timer(1000,1);
+		public var specialActive:Boolean = false;
 		public var angle180ShotsLeft:int = 0;
 		public var angle45ShotsLeft:int = 0;
 		public var angle90ShotsLeft:int = 0;
@@ -126,7 +127,7 @@ package src
 			//panning van plane bepalen
 			pan = Math.ceil(((x - (main.stage.stageWidth / 2)) / (main.stage.stageWidth / 2))*10)/10;
 			
-			if(!reloading)shoot();
+			if(!reloading && !specialActive)shoot();
 			
 			lastx = x;
 			lasty = y;
@@ -149,7 +150,7 @@ package src
 			{
 				rapidShotsLeft--;
 				l = new libRapidLaser();
-				reloadTimer.delay = 30; //tweaken 5: "Snelheid waarmee het schip snelle kogels schiet."
+				reloadTimer.delay = 35; //tweaken 5: "Snelheid waarmee het schip snelle kogels schiet."
 			} 
 			else
 			{
@@ -162,7 +163,7 @@ package src
 			if (doubleShotsLeft > 0) 
 			{
 				doubleShotsLeft--;
-				l.x = x-8;
+				l.x = x-16;
 									
 				var l2:Laser;
 				if (rapidShotsLeft > 0){ l2 = new libRapidLaser();}else{l2 = new Laser();}
@@ -171,7 +172,7 @@ package src
 				
 				main.lasers.push(l2);
 				
-				l2.x = x+8;
+				l2.x = x+16;
 				l2.y = y;// * scaleY * sizeModifier;
 				l2.init(0,pan);
 				
@@ -275,23 +276,23 @@ package src
 		{
 			reloading = false;
 		}
-		public function activateDouble($amount:int = 10)
+		public function activateDouble($amount:int = 10, timeMode:Boolean = false)
 		{
 			doubleShotsLeft += $amount;
 		}
-		public function activateRapid($amount:int = 50)
+		public function activateRapid($amount:int = 50, timeMode:Boolean = false)
 		{
 			rapidShotsLeft += $amount;
 		}
-		public function activate45Angle($amount:int = 50)
+		public function activate45Angle($amount:int = 50, timeMode:Boolean = false)
 		{
 			angle45ShotsLeft += $amount;
 		}
-		public function activate90Angle($amount:int = 50)
+		public function activate90Angle($amount:int = 50, timeMode:Boolean = false)
 		{
 			angle90ShotsLeft += $amount;
 		}
-		public function activate180Angle($amount:int = 50)
+		public function activate180Angle($amount:int = 50, timeMode:Boolean = false)
 		{
 			angle180ShotsLeft += $amount;
 		}
