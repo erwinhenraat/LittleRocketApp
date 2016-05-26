@@ -3,14 +3,15 @@ package src
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.media.Sound;
 	import flash.text.TextField;
 	import flash.utils.Timer;
 	import flash.events.TimerEvent;
-	import flash.events.TouchEvent;
-	import flash.ui.MultitouchInputMode;
-	import flash.ui.Multitouch;
+//	import flash.events.TouchEvent;
+//	import flash.ui.MultitouchInputMode;
+//	import flash.ui.Multitouch;
 	import flash.net.SharedObject;
 	/**
 	 * ...
@@ -47,7 +48,7 @@ package src
 			
 			
 			
-			Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
+			//Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
 		}		
 		private function getHighScore():void
 		{
@@ -89,8 +90,8 @@ package src
 		private function initGame():void 
 		{		
 			
-			this.addEventListener(TouchEvent.TOUCH_BEGIN, onTouchBegin);
-			this.addEventListener(TouchEvent.TOUCH_END, onTouchEnd);
+			//this.addEventListener(TouchEvent.TOUCH_BEGIN, onTouchBegin);
+			//this.addEventListener(TouchEvent.TOUCH_END, onTouchEnd);
 			
 			
 			gameEnded = false;
@@ -120,11 +121,12 @@ package src
 			
 			
 		}
-		private function onTouchBegin(e:TouchEvent):void 
+		/*
+		private function onTouchBegin(e:MouseEvent):void 
 		{
 		//	trace("touchbegin");
 			
-			this.addEventListener(TouchEvent.TOUCH_MOVE, onTouchMove);
+		//	this.addEventListener(TouchEvent.TOUCH_MOVE, onTouchMove);
 			_fingerPos.x = e.stageX;
 			_fingerPos.y = e.stageY;
 		}
@@ -132,14 +134,15 @@ package src
 		{
 			//trace("touchend");
 			this.removeEventListener(TouchEvent.TOUCH_MOVE, onTouchMove);
-		}		
+		}
+	
 		private function onTouchMove(e:TouchEvent):void 
 		{
 			//trace("touchmove");
 			_fingerPos.x = e.stageX;
 			_fingerPos.y = e.stageY;
 		}
-		
+		*/
 	
 		private function newWave()
 		{	
@@ -255,6 +258,9 @@ package src
 		}
 		private function loop(e:Event):void 
 		{
+			_fingerPos.x = mouseX;
+			_fingerPos.y = mouseY;
+			
 			//update ui
 			if (plane != null)ui.update(plane.doubleShotsLeft, plane.rapidShotsLeft, plane.angle45ShotsLeft, plane.angle90ShotsLeft, wave, highestWave);
 						
