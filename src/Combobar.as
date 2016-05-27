@@ -308,11 +308,20 @@ package src
 		
 		private function powerupRapidInsanity():void 
 		{
+			
+			/*
 			main.plane.activate45Angle(160, true);
 			main.plane.activate90Angle(160, true);
 			main.plane.activate180Angle(80, true);
 			main.plane.activateRapid(80, true);
 			main.plane.activateDouble(160, true);
+			*/
+			
+			main.plane.activatePowerup(main.plane.powerupTypes.rapid, 5, true);
+			main.plane.activatePowerup(main.plane.powerupTypes.double, 5, true);
+			main.plane.activatePowerup(main.plane.powerupTypes.degrees45, 5, true);
+			main.plane.activatePowerup(main.plane.powerupTypes.degrees90, 5, true);
+			main.plane.activatePowerup(main.plane.powerupTypes.degrees180, 5, true);
 		}
 		
 		private function powerupShield():void 

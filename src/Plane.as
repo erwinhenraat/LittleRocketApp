@@ -4,6 +4,7 @@ package src
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
 	import flash.events.KeyboardEvent;
+	import flash.utils.Dictionary;
 	import flash.utils.Timer;
 	import flash.events.TimerEvent;
 	import flash.display.Stage;
@@ -276,8 +277,142 @@ package src
 		{
 			reloading = false;
 		}
+		
+		
+		
+		/*Work in progress ----------------------   WIP   !!!!*/
+		/*
+		private var powerupTimerObjects:Vector.<Object> = [new Object(),new Object(),new Object(),new Object(),new Object()];
 		public function activateDouble($amount:int = 10, timeMode:Boolean = false)
 		{
+			if (timeMode){
+				if (powerupTimerObjects[0].timer != null)
+				{
+					//lengthen timer
+					powerupTimerObjects[0].timer.delay = powerupTimers[0].currentCount + $amount;
+					
+				}
+				else
+				{
+					//create timer
+					powerupTimerObjects[0].type = "double";
+					powerupTimerObjects[0].timer = new Timer($amount, 1);
+					powerupTimerObjects.timer[0].start();
+					powerupTimers[0].timer.addEventListener(TimerEvent.TIMER_COMPLETE, deactivatePowerup);
+					doubleShotsLeft = 999999;
+				}
+
+			}
+			else{
+				doubleShotsLeft += $amount;
+			}
+		}
+		*/
+		
+		private var powTypes:Object = {double:0, rapid:1, degrees45:2, degrees90:3, degrees180:4}
+		/*
+		powTypes.double = 0;
+		powTypes.rapid = 1;
+		powTypes.degrees45 = 2;
+		powTypes.degrees90 = 3;
+		powTypes.degrees180 = 4;
+		*/
+		public function get powerupTypes():Object
+		{
+			return powTypes;
+		}		
+		private var powTimers:Vector.<Timer> = new Vector.<Timer>(5);
+		public function activatePowerup(type:int, amount:int, timeMode:Boolean = false ):void
+		{
+			if (timeMode)
+			{		
+				var t:Timer;
+				if (powTimers[type] == null)
+				{
+					t = powTimers[type] = new Timer(1000, amount);
+					switch(type)
+					{
+						case powTypes.double:
+						doubleShotsLeft = 99999;
+						break;
+						case powTypes.rapid:
+						rapidShotsLeft = 99999;
+						break;
+						case powTypes.degrees45:
+						angle45ShotsLeft = 99999;
+						break;
+						case powTypes.degrees90:
+						angle90ShotsLeft = 99999;
+						break;
+						case powTypes.degrees180:
+						angle180ShotsLeft = 99999;
+						break;
+					}
+					t.addEventListener(TimerEvent.TIMER_COMPLETE, deactivatePowerup);
+					t.start();
+					
+				}
+				else
+				{
+					t = powTimers[type];
+					t.repeatCount = (t.repeatCount - t.currentCount) + amount;
+					t.reset();
+					t.start();
+					
+					trace("repeat "+t.repeatCount);
+				}				
+			}
+			else
+			{
+				switch(type)
+				{
+					case powTypes.double:
+					doubleShotsLeft += amount;
+					break;
+					case powTypes.rapid:
+					rapidShotsLeft += amount;
+					break;
+					case powTypes.degrees45:
+					angle45ShotsLeft += amount;
+					break;
+					case powTypes.degrees90:
+					angle90ShotsLeft += amount;
+					break;
+					case powTypes.degrees180:
+					angle180ShotsLeft += amount;
+					break;
+				}
+			}			
+						
+		}	
+		private function deactivatePowerup(e:TimerEvent):void 
+		{			
+			var type:int = powTimers.indexOf(e.target as Timer);
+			powTimers[type] = null;
+			switch(type)
+			{
+				case powTypes.double:
+				doubleShotsLeft = 0;
+				break;
+				case powTypes.rapid:
+				rapidShotsLeft = 0;
+				break;
+				case powTypes.degrees45:
+				angle45ShotsLeft = 0;
+				break;
+				case powTypes.degrees90:
+				angle90ShotsLeft = 0;
+				break;
+				case powTypes.degrees180:
+				angle180ShotsLeft = 0;
+				break;
+			}		
+			
+		}
+		
+		/*
+		public function activateDouble($amount:int = 10, timeMode:Boolean = false)
+		{			
 			doubleShotsLeft += $amount;
 		}
 		public function activateRapid($amount:int = 50, timeMode:Boolean = false)
@@ -296,7 +431,7 @@ package src
 		{
 			angle180ShotsLeft += $amount;
 		}
-		
+		*/
 		public function fireMagnet()
 		{
 			var b:Laser = new libMagnet();

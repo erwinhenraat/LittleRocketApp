@@ -3,22 +3,22 @@ package src
 	
 	/*todo
 	 *
-	 * 1-wingmen spacen - v
-	 * 2-powerups baseren op tijd
-	 * 3-meer enemies spawnen - v
-	 * 4- bug enemy blijft soms bij rand hangen, niet te raken
-	 *
-	 * 5 - kogels eerder verwijderen?
+	 * 1 - wingmen spacen - v
+	 * 2 - powerups baseren op tijd - v
+	 * 3 - meer enemies spawnen - v
+	 * 4 - bug enemy blijft soms bij rand hangen, niet te raken - ?	 *
+	 * 5 - kogels eerder verwijderen - v
 	 * 6 - Masker over speelveld - v
 	 * 7 - lasers meer uit elkaar - v
 	 * 8 - more stars - v
 	 * 9 - kogels uit bij special beam - v
-	 * 10 - error na afloop van beam maar soms
+	 * 10 - error na afloop van beam maar soms - ?
 	 * 11 - beam audio loopen - v
 	 * 12 - tussenlaag sneller - v
 	 * 13 - beam ipv faden horizontaal plat - v
 	 * 14 - laser pas verwijderen 1 frame nadat het een enemy raakt - v
 	 * 15 - on death 3 letters invullen top 10
+	 * 16 - horizontal flying bullets must be removed offscreen - v
 	 * 
 	 * */
 	
@@ -384,14 +384,14 @@ package src
 					if (plane.hitTestPoint(powerup.x, powerup.y, true))
 					{
 						//determine and activate powerup
-						if (powerup.currentLabel == "double") plane.activateDouble(25, true); //tweakpunt 12: "Hoe lang duren de powerups?"
+						if (powerup.currentLabel == "double") plane.activatePowerup(plane.powerupTypes.double, 5, true);//plane.activateDouble(25, true); 
 						if (powerup.currentLabel == "special") {
 							special = new Special(this, 4500); //tweakpunt 13: "Hoe lang duren de powerups?"
 							plane.specialActive = true;
 						}
-						if (powerup.currentLabel == "rapid") plane.activateRapid(25, true); //tweakpunt 14: "Hoe lang duren de powerups?"
-						if (powerup.currentLabel == "45angle") plane.activate45Angle(30, true); //tweakpunt 15 - "Hoe lang duren de powerups?"
-						if (powerup.currentLabel == "90angle") plane.activate90Angle(30, true); //tweakpunt 16 - "Hoe lang duren de powerups?"
+						if (powerup.currentLabel == "rapid") plane.activatePowerup(plane.powerupTypes.rapid, 5, true);//plane.activateRapid(25, true); 
+						if (powerup.currentLabel == "45angle") plane.activatePowerup(plane.powerupTypes.degrees45, 5, true);//plane.activate45Angle(30, true); //tweakpunt 15 - "Hoe lang duren de powerups?"
+						if (powerup.currentLabel == "90angle") plane.activatePowerup(plane.powerupTypes.degrees90, 5, true);//plane.activate90Angle(30, true); //tweakpunt 16 - "Hoe lang duren de powerups?"
 						combo.pickup(powerup.currentLabel);
 						powerup.destroy = true;
 					}
@@ -427,7 +427,7 @@ package src
 			for (var i:int = 0; i < lasers.length; i++)
 			{
 				lasers[i].update();
-				if (lasers[i].y < -100)
+				if (lasers[i].y < -lasers[i].height || lasers[i].x < -lasers[i].height || lasers[i].x > stage.stageWidth + lasers[i].height)
 				{
 					lasers[i].toRemove = true;
 				}
