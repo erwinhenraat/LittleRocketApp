@@ -15,10 +15,9 @@ package src
 	 * 9 - kogels uit bij special beam - v
 	 * 10 - error na afloop van beam maar soms
 	 * 11 - beam audio loopen - v
-	 * 
 	 * 12 - tussenlaag sneller - v
 	 * 13 - beam ipv faden horizontaal plat - v
-	 * 14 - laser pas verwijderen 1 frame nadat het een enemy raakt
+	 * 14 - laser pas verwijderen 1 frame nadat het een enemy raakt - v
 	 * 15 - on death 3 letters invullen top 10
 	 * 
 	 * */
@@ -341,8 +340,29 @@ package src
 		
 		private function loop(e:Event):void
 		{
+			/*
+			-----------------------------Nextframe actions:-------------------------------------
+			*/
+			//remove lasers
+			for (var l:int = 0; l < lasers.length; l++)
+			{
+				if (lasers[l].toRemove)
+				{
+					removeChild(lasers[l]);
+					lasers.splice(l, 1);
+				}
+			}
+		
+			
+			
+			
+			/*
+			-----------------------------Currentframe actions:-------------------------------------
+			*/
 			_fingerPos.x = mouseX;
-			_fingerPos.y = mouseY;
+			_fingerPos.y = mouseY;			
+			
+			
 			
 			//keep shiut in screen
 			//update ui
@@ -422,7 +442,7 @@ package src
 					if (special.hitTestPoint(enemies[j].x, enemies[j].y, true))
 					{
 						enemies[j].loseLife();
-							//enemies[j].mustDie = true;
+						//enemies[j].mustDie = true;
 					}
 				}
 				//kill player if it hits enemy
@@ -520,15 +540,7 @@ package src
 						plane.explode();
 					}
 				}
-				//remove lasers
-				for (var l:int = 0; l < lasers.length; l++)
-				{
-					if (lasers[l].toRemove)
-					{
-						removeChild(lasers[l]);
-						lasers.splice(l, 1);
-					}
-				}
+				
 				//remove enemies
 				for (var n:int = 0; n < enemies.length; n++)
 				{
