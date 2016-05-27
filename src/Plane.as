@@ -359,7 +359,7 @@ package src
 					t.reset();
 					t.start();
 					
-					trace("repeat "+t.repeatCount);
+					//trace("repeat "+t.repeatCount);
 				}				
 			}
 			else

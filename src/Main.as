@@ -6,18 +6,18 @@ package src
 	 * 1 - wingmen spacen - v
 	 * 2 - powerups baseren op tijd - v
 	 * 3 - meer enemies spawnen - v
-	 * 4 - bug enemy blijft soms bij rand hangen, niet te raken - ?	 *
+	 * 4 - 		bug enemy blijft soms bij rand hangen, niet te raken - ?
 	 * 5 - kogels eerder verwijderen - v
 	 * 6 - Masker over speelveld - v
 	 * 7 - lasers meer uit elkaar - v
 	 * 8 - more stars - v
 	 * 9 - kogels uit bij special beam - v
-	 * 10 - error na afloop van beam maar soms - ?
+	 * 10 - 	error na afloop van beam maar soms - ?
 	 * 11 - beam audio loopen - v
 	 * 12 - tussenlaag sneller - v
 	 * 13 - beam ipv faden horizontaal plat - v
 	 * 14 - laser pas verwijderen 1 frame nadat het een enemy raakt - v
-	 * 15 - on death 3 letters invullen top 10
+	 * 15 - 	on death 3 letters invullen top 10
 	 * 16 - horizontal flying bullets must be removed offscreen - v
 	 * 
 	 * */
