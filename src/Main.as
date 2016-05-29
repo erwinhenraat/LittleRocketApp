@@ -6,7 +6,7 @@ package src
 	 * 1 - wingmen spacen - v
 	 * 2 - powerups baseren op tijd - v
 	 * 3 - meer enemies spawnen - v
-	 * 4 - 		bug enemy blijft soms bij rand hangen, niet te raken - ?
+	 * 4 - bug enemy blijft soms bij rand hangen, niet te raken - v
 	 * 5 - kogels eerder verwijderen - v
 	 * 6 - Masker over speelveld - v
 	 * 7 - lasers meer uit elkaar - v
@@ -19,6 +19,7 @@ package src
 	 * 14 - laser pas verwijderen 1 frame nadat het een enemy raakt - v
 	 * 15 - 	on death 3 letters invullen top 10
 	 * 16 - horizontal flying bullets must be removed offscreen - v
+	 * 17 - use objectpooling to increase performance @ wave spawning
 	 * 
 	 * */
 	
@@ -45,8 +46,13 @@ package src
 		public var wingmen:Array = new Array();
 		public var space:Level;
 		public var lasers:Array = new Array();
-		private var scrollSpeed:Number = 2; // tweakpunt 1: "Snelheid waarmee de achtergrond voorbij komt."
-		public var enemies:Array = new Array();
+		private var scrollSpeed:Number = 3; // tweakpunt 1: "Snelheid waarmee de achtergrond voorbij komt."
+		
+		
+		public var enemies:Vector.<Enemy> = new Vector.<Enemy>();
+		public var enemyPool:Vector.<Enemy> = new Vector.<Enemy>();//Work in progress -- need object poolng to improve performance in higher waves.
+		
+		
 		public var explosions:Array = new Array();
 		private var numEnemiesToSpawn:int;
 		public var ui:UserInterface;
@@ -222,47 +228,50 @@ package src
 					xpos = 10 + Math.round(Math.random() * stage.stageWidth - 20);
 					ypos = -100;
 					e.ySpeed = 6 + Math.round(Math.random() * 6);
-					e.xSpeed = -4 + Math.round(Math.random() * 8);
-					if (e.xSpeed < 1 && e.xSpeed >= 0) e.xSpeed += 1;
-					if (e.xSpeed > -1 && e.xSpeed <= 0) e.xSpeed -= 1;
+					e.xSpeed = -4 + Math.round(Math.random() * 8);					
+					while (e.xSpeed < 1 && e.xSpeed > -1) e.xSpeed = -4 + Math.round(Math.random() * 8);
+					//while (e.ySpeed < 1 && e.ySpeed > -1) e.ySpeed *= 10;	
+					
+					//if (e.xSpeed > -1 && e.xSpeed <= 0) e.xSpeed -= 1;
 				}
 				else
 				{
 					
-					e.xSpeed = 0;
-					e.ySpeed = 0;
+					//e.xSpeed = 0;
+					//e.ySpeed = 0;
 					switch (Math.ceil(Math.random() * 4))
 					{
 					case 1: 
-						xpos = 10 + Math.round(Math.random() * stage.stageWidth - 20); //tweakpunt 8: "Bepaal de posities en snelheid van de enemies vanaf wave 10 als ze van onder komen."
+						xpos = 10 + Math.round(Math.random() * stage.stageWidth - 20); //van boven komen."
 						ypos = -100;
 						e.ySpeed = 6 + Math.round(Math.random() * 6);
 						e.xSpeed = -4 + Math.round(Math.random() * 8);
+						while (e.xSpeed < 1 && e.xSpeed > -1) e.xSpeed = -4 + Math.round(Math.random() * 8);
 						break;
 					case 2: 
-						xpos = stage.stageWidth + 100; //tweakpunt 9: "Bepaal de posities en snelheid van de enemies vanaf wave 10 als ze van rechts komen."
+						xpos = stage.stageWidth + 100; //van rechts komen."
 						ypos = 10 + Math.round(Math.random() * stage.stageHeight - 20);
-						e.xSpeed = -3 - Math.round(Math.random() * 3);
-						e.ySpeed = -2 + Math.round(Math.random() * 4);
-						if (e.ySpeed < 1 && e.ySpeed >= 0) e.ySpeed += 1;
-						if (e.ySpeed > -1 && e.ySpeed <= 0) e.ySpeed -= 1;
+						e.xSpeed = -6 - Math.round(Math.random() * 6);
+						e.ySpeed = -4 + Math.round(Math.random() * 8);
+						while (e.ySpeed < 1 && e.ySpeed > -1) e.ySpeed = -4 + Math.round(Math.random() * 8);
 						break;
 					case 3: 
-						xpos = 10 + Math.round(Math.random() * stage.stageWidth - 20); //tweakpunt 10: "Bepaal de posities en snelheid van de enemies vanaf wave 10 als ze van onder komen."
+						xpos = 10 + Math.round(Math.random() * stage.stageWidth - 20); //van onder."
 						ypos = stage.stageHeight + 100;
 						e.ySpeed = -6 - Math.round(Math.random() * 6);
-						e.xSpeed = -4 + Math.round(Math.random() * 8);
+						e.xSpeed = -4 + Math.round(Math.random() * 8);						
+						while (e.xSpeed < 1 && e.xSpeed > -1) e.xSpeed = -4 + Math.round(Math.random() * 8);
 						break;
 					case 4: 
-						xpos = -100; //tweakpunt 11: "Bepaal de posities en snelheid van de enemies vanaf wave 10 als ze van links komen."
+						xpos = -100; //van links."
 						ypos = 10 + Math.round(Math.random() * stage.stageHeight - 20);
 						e.xSpeed = 6 + Math.round(Math.random() * 6);
 						e.ySpeed = -4 + Math.round(Math.random() * 8);
-						if (e.ySpeed < 1 && e.ySpeed >= 0) e.ySpeed += 1;
-						if (e.ySpeed > -1 && e.ySpeed <= 0) e.ySpeed -= 1;
+						while (e.ySpeed < 1 && e.ySpeed > -1) e.ySpeed = -4 + Math.round(Math.random() * 8);
 						break;
 					}
 				}
+				
 				/*
 				   e.xSpeed = e.xSpeed = -6 + Math.round(Math.random() * 12);
 				   if (e.xSpeed < 1 && e.xSpeed > 0)e.xSpeed+=1;
@@ -454,6 +463,7 @@ package src
 						if (wingmen[p].hitTestObject(enemies[j]) && !wingmen[p].invulnerable)
 						{
 							wingmen[p].explode();
+							
 						}
 					}
 					
@@ -546,7 +556,11 @@ package src
 				{
 					if (enemies[n].mustDie)
 					{
-						if (enemies[n] is SplicerEnemy) enemies[n].splitUp();
+						if (enemies[n] is SplicerEnemy) 
+						{
+							var spl:SplicerEnemy = enemies[n] as SplicerEnemy;
+							spl.splitUp();
+						}
 						enemies[n].explode();
 					}
 				}

@@ -18,6 +18,7 @@ package src
 		{
 			exploded = false;
 		}
+		
 		public function explode()
 		{
 			if (!exploded)
@@ -80,6 +81,7 @@ package src
 				}
 			}
 		}
+		
 	
 		
 	}
