@@ -1,6 +1,7 @@
 package src 
 {
 	import flash.media.Sound;
+	import flash.media.SoundTransform;
 	import flash.ui.Keyboard;
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
@@ -482,12 +483,20 @@ package src
 		{
 			if(!destroyingShield){
 				destroyingShield = true;
-				var t:Timer = new Timer(100, 10);
+				var t:Timer = new Timer(25, 40);
 				t.addEventListener(TimerEvent.TIMER, unshield);
 				
 				t.start();
 				
-				powDownShieldSound.play(0, 1);
+				
+				var flash:Shape = new Shape();
+				shield.addChild(flash);
+				
+				flash.graphics.beginFill(0xffffff, 1);
+				flash.graphics.drawCircle(0, (shield.height*0.5)-5, shield.height*0.5);
+				flash.graphics.endFill();
+					
+				powDownShieldSound.play(0, 1, new SoundTransform(2));
 			}
 			
 		}	
@@ -496,9 +505,11 @@ package src
 		{
 			
 			
-			
 			var t:Timer = e.target as Timer;
-			if(shield.alpha > 0)shield.alpha -= 0.1;
+			if (shield.alpha > 0){
+				shield.alpha -= 0.02;
+				shield.scaleX = shield.scaleY -= 0.02;
+			}
 			if (t.currentCount == t.repeatCount)
 			{
 				t.stop();

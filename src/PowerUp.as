@@ -31,6 +31,8 @@ package src
 				gotoAndStop("90angle");
 				break;
 			}		
+			
+			this.scaleX = this.scaleY = 1.5;
 		}		
 		public function update():void 
 		{

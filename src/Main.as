@@ -46,7 +46,7 @@ package src
 		public var wingmen:Array = new Array();
 		public var space:Level;
 		public var lasers:Array = new Array();
-		private var scrollSpeed:Number = 3; // tweakpunt 1: "Snelheid waarmee de achtergrond voorbij komt."
+		private var scrollSpeed:Number = 4; // tweakpunt 1: "Snelheid waarmee de achtergrond voorbij komt."
 		
 		
 		public var enemies:Vector.<Enemy> = new Vector.<Enemy>();

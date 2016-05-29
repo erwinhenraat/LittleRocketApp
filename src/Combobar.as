@@ -301,7 +301,7 @@ package src
 		}		
 		private function powerupShrink():void 
 		{
-			main.plane.shrink(20000);	
+			main.plane.shrink(30000);	
 		}
 		private function powerupMagnet():void 
 		{
