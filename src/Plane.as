@@ -1,5 +1,6 @@
 package src 
 {
+	import flash.media.Sound;
 	import flash.ui.Keyboard;
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
@@ -317,6 +318,8 @@ package src
 		powTypes.degrees90 = 3;
 		powTypes.degrees180 = 4;
 		*/
+		
+		private var blingSound:Sound = new BlingSound();
 		public function get powerupTypes():Object
 		{
 			return powTypes;
@@ -324,6 +327,9 @@ package src
 		private var powTimers:Vector.<Timer> = new Vector.<Timer>(5);
 		public function activatePowerup(type:int, amount:int, timeMode:Boolean = false ):void
 		{
+			blingSound.play(Math.random() * 200, 1);
+			
+			
 			if (timeMode)
 			{		
 				var t:Timer;
@@ -459,13 +465,19 @@ package src
 			shrinkTimer.stop();
 			shrinkTimer.reset();
 		}
+		
+		//private var powUpShieldSnd:Sound = new PowUpSound();
 		public function activateShield()
 		{
+			//powUpShieldSnd.play(0, 1);
+			
 			shielded = true;
 			shield = new libShield();
 			addChild(shield);
 			//trace("shield up!");
 		}
+		
+		private var powDownShieldSound:Sound = new ShieldDownSound();
 		public function destroyShield()
 		{
 			if(!destroyingShield){
@@ -474,11 +486,17 @@ package src
 				t.addEventListener(TimerEvent.TIMER, unshield);
 				
 				t.start();
+				
+				powDownShieldSound.play(0, 1);
 			}
 			
-		}		
+		}	
+		
 		private function unshield(e:TimerEvent):void 
 		{
+			
+			
+			
 			var t:Timer = e.target as Timer;
 			if(shield.alpha > 0)shield.alpha -= 0.1;
 			if (t.currentCount == t.repeatCount)

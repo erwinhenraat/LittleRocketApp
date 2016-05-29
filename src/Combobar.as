@@ -184,6 +184,8 @@ package src
 				else
 				{
 					initBar();
+					
+					poweDownSound.play(0, 1);
 				}
 			}		
 		}		
@@ -328,12 +330,17 @@ package src
 		{
 			if(!main.plane.shielded)main.plane.activateShield();
 		}
+		
+		private var powerUpSound = new PowUpSound();
+		private var poweDownSound = new PowDownSound();
 		public function moveToPlayer():void
 		{
 			largeSuperUp.x -= ((largeSuperUp.x+x) - main.plane.x) / 6;
 			largeSuperUp.y -= ((largeSuperUp.y + y) - main.plane.y) / 6;
 			if (largeSuperUp.x+x <= main.plane.x+10 && largeSuperUp.x+x >= main.plane.x-10 && largeSuperUp.y+y <= main.plane.y+10 && largeSuperUp.y+y >= main.plane.y-10)
 			{	
+				
+				powerUpSound.play(0, 1);
 				removeChild(largeSuperUp);
 				largeSuperUp = null;
 				removeEventListener(Event.ENTER_FRAME, handlePickupAnimation);
