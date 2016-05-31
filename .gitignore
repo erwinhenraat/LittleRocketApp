@@ -1,4 +1,19 @@
-Vliegtuigspelletje.fla
+# Flash files #
+###############
+*.fla
+*.swc
+
+# Compiled source #
+###################
+*.swf
+
+# Packages #
+############
+*.rar
+*.zip
+
+# Folders to ignore #
+#####################
 /rel
-/AppIconsForPublish
 /lib
+/AppIconsForPublish
