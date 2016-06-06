@@ -19,7 +19,8 @@ package src
 	 * 14 - laser pas verwijderen 1 frame nadat het een enemy raakt - v
 	 * 15 - 	on death 3 letters invullen top 10
 	 * 16 - horizontal flying bullets must be removed offscreen - v
-	 * 17 - use objectpooling to increase performance @ wave spawning
+	 * 17 - 	use objectpooling to increase performance @ wave spawning
+	 * 18 - 	refactor using class diagram
 	 * 
 	 * */
 	
@@ -63,7 +64,7 @@ package src
 		private var gameEnded:Boolean = false;
 		public var combo:Combobar;
 		private var so:SharedObject;
-		private var cf = 0;
+		private var cf:int = 0;
 		private var framesToShake:int;
 		private var _shakeIntensity:int;
 		
