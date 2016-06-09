@@ -1,5 +1,6 @@
 package src.gameObjects 
 {
+	import flash.display.MovieClip;
 	/**
 	 * ...
 	 * @author erwin henraat
@@ -9,7 +10,9 @@ package src.gameObjects
 		
 		public function Enemy() 
 		{
-			
+			addChild(new libEnemy());
+			var clip:MovieClip  = this.getChildAt(0) as MovieClip;
+			clip.stop();
 		}
 		
 	}

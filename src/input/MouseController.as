@@ -5,7 +5,7 @@ package src.input
 	import flash.events.Event;
 	import flash.geom.Point;
 	import flash.events.MouseEvent;
-	import src.events.MousePositionEvent;
+
 	
 	/**
 	 * ...
@@ -14,13 +14,27 @@ package src.input
 	public class MouseController extends EventDispatcher 
 	{
 		private var _stage:Stage;
+		private var _mouseDown:Boolean = false;
 		private static var _instance:MouseController;	
-		public static function init(stage:Stage):void
+		public static function enable(stage:Stage):void
 		{
 			_instance = new MouseController();
 			_instance._stage = stage;
+			_instance._stage.addEventListener(MouseEvent.MOUSE_DOWN, onDown);
+			_instance._stage.addEventListener(MouseEvent.MOUSE_UP, onUp);
 			
 		}
+		
+		static private function onUp(e:MouseEvent):void 
+		{
+			_instance._mouseDown = false;
+		}
+		
+		static private function onDown(e:MouseEvent):void 
+		{
+			_instance._mouseDown = true;
+		}
+		
 		public static function get mouseX():Number
 		{
 			return _instance._stage.mouseX;					
@@ -28,7 +42,12 @@ package src.input
 		public static function get mouseY():Number
 		{
 			return _instance._stage.mouseY;
-		}	
+		}
+		public static function get mouseDown():Boolean
+		{
+			return _instance._mouseDown;
+		}
+
 				
 	}
 

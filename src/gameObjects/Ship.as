@@ -9,7 +9,7 @@ package src.gameObjects
 		
 		public function Ship() 
 		{
-		
+			addChild(new libShip);
 			
 		}
 		
