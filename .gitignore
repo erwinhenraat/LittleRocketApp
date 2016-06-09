@@ -1,6 +1,6 @@
 # Flash files #
 ###############
-
+*.swf
 *.swc
 
 # Compiled source #
