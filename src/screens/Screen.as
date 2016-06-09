@@ -19,9 +19,15 @@ package src.screens
 		
 		public function addUIElement(element:Class):void
 		{
-			
-			addChild(new element());
-			
+			var e = new element();
+			if (e is UIElement)
+			{
+				addChild(e);
+			}
+			else
+			{
+				throw new Error("added class is not a UIElement");
+			}
 		}
 		
 	}
