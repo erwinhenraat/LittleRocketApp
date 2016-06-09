@@ -197,9 +197,13 @@ package src.oldCode
 		   _fingerPos.y = e.stageY;
 		   }
 		 */
-		
+		private var waveMessage:MovieClip = new libNewWave();
 		private function newWave()
 		{
+			
+			if (!contains(waveMessage)) addChild(waveMessage);
+			
+			
 			
 			numEnemiesToSpawn = 5 + Math.ceil(wave / 4);//tweakpunt 3: "Formule die bepaalt hoeveel vijanden er zijn per wave."
 			
