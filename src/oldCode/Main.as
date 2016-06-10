@@ -241,14 +241,14 @@ package src.oldCode
 				var xpos:Number;
 				var ypos:Number;
 				var e:Enemy = new Enemy(this);
-				
+				var waveStartDistance:Number = 500;
 				e.addEventListener(Enemy.ENEMY_DIES, onEnemyDeath);
 				enemies.push(e);
 				if (wave < 10)
 				{
 					//tweakpunt 7: "Bepaal de posities en snelheid van de enemies tot wave 10."
 					xpos = 10 + Math.round(Math.random() * stage.stageWidth - 20);
-					ypos = -100;
+					ypos = -waveStartDistance;
 					e.ySpeed = 6 + Math.round(Math.random() * 6);
 					e.xSpeed = -4 + Math.round(Math.random() * 8);					
 					while (e.xSpeed < 1 && e.xSpeed > -1) e.xSpeed = -4 + Math.round(Math.random() * 8);
@@ -265,13 +265,13 @@ package src.oldCode
 					{
 					case 1: 
 						xpos = 10 + Math.round(Math.random() * stage.stageWidth - 20); //van boven komen."
-						ypos = -100;
+						ypos = -waveStartDistance;
 						e.ySpeed = 6 + Math.round(Math.random() * 6);
 						e.xSpeed = -4 + Math.round(Math.random() * 8);
 						while (e.xSpeed < 1 && e.xSpeed > -1) e.xSpeed = -4 + Math.round(Math.random() * 8);
 						break;
 					case 2: 
-						xpos = stage.stageWidth + 100; //van rechts komen."
+						xpos = stage.stageWidth + waveStartDistance; //van rechts komen."
 						ypos = 10 + Math.round(Math.random() * stage.stageHeight - 20);
 						e.xSpeed = -6 - Math.round(Math.random() * 6);
 						e.ySpeed = -4 + Math.round(Math.random() * 8);
@@ -279,13 +279,13 @@ package src.oldCode
 						break;
 					case 3: 
 						xpos = 10 + Math.round(Math.random() * stage.stageWidth - 20); //van onder."
-						ypos = stage.stageHeight + 100;
+						ypos = stage.stageHeight + waveStartDistance;
 						e.ySpeed = -6 - Math.round(Math.random() * 6);
 						e.xSpeed = -4 + Math.round(Math.random() * 8);						
 						while (e.xSpeed < 1 && e.xSpeed > -1) e.xSpeed = -4 + Math.round(Math.random() * 8);
 						break;
 					case 4: 
-						xpos = -100; //van links."
+						xpos = -waveStartDistance; //van links."
 						ypos = 10 + Math.round(Math.random() * stage.stageHeight - 20);
 						e.xSpeed = 6 + Math.round(Math.random() * 6);
 						e.ySpeed = -4 + Math.round(Math.random() * 8);
