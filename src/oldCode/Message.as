@@ -28,7 +28,7 @@ package src.oldCode
 			y = $y;
 			this.embedFonts = true;
 			
-			this.setTextFormat(new TextFormat("Tw Cen MT Condensed Extra Bold", $size, 0xffffff, true));
+			this.setTextFormat(new TextFormat("Verdana", $size, 0xffffff, true));
 			
 		}		
 		private function fade(te:TimerEvent):void 

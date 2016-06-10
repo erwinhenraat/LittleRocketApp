@@ -201,9 +201,19 @@ package src.oldCode
 		private function newWave()
 		{
 			
-			if (!contains(waveMessage)) addChild(waveMessage);
+			if (!contains(waveMessage)) 
+			{
+				
+				waveMessage.y = stage.stageHeight / 2;
+				waveMessage.x = stage.stageWidth / 2;	
+				ui.addChild(waveMessage);
+			}
 			
-			
+			waveMessage.play();
+			waveMessage.visible = true;
+			var t:Timer = new Timer(3000, 1);
+			t.addEventListener(TimerEvent.TIMER_COMPLETE, removeWaveMessage);
+			t.start();
 			
 			numEnemiesToSpawn = 5 + Math.ceil(wave / 4);//tweakpunt 3: "Formule die bepaalt hoeveel vijanden er zijn per wave."
 			
@@ -215,6 +225,13 @@ package src.oldCode
 				var num:Number = numEnemiesToSpawn / 5;//tweakpunt 6: "De hoeveelheid gouden enemies."
 				spawnSplicers(num);
 			}
+			
+		}
+		
+		private function removeWaveMessage(e:TimerEvent):void 
+		{
+			waveMessage.gotoAndStop(1);
+			waveMessage.visible = false;
 		}
 		
 		private function spawnEnemies(number:int):void
