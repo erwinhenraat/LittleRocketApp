@@ -104,15 +104,20 @@ package src.model
 				var p:GameObject = addGameobject(gameObjectTypes[Math.floor(Math.random()*5)]);
 				
 				//create an abillity and add it to the gameobject by referencing the gameobject as an argument
-				new Move(p, movementSystem);
+				if (Math.random() > 0.2)
+				{
+					new Move(p, movementSystem);
 							
+					//change gameobject settings
+					p.movementVector.x = Math.random();
+					p.movementVector.y = Math.random();
+					p.movementVector.speed = Math.random() * 6;
+				
+				}
 				//change gameobject settings
+				p.rotationDegrees = Math.random() * 360;
 				p.x = Math.random() * stage.stageWidth;
 				p.y = Math.random() * stage.stageHeight;
-				p.movementVector.x = Math.random();
-				p.movementVector.y = Math.random();
-				p.movementVector.speed = Math.random() * 6;
-				p.rotationDegrees = Math.random()*360;
 			}			
 			
 			
