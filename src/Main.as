@@ -1,65 +1,35 @@
 package src 
 {
-	import flash.display.MovieClip;
-	import src.gameLogic.GameEngine;
-	import src.input.MouseController;
-	import src.screens.GameScreen;
-	import flash.events.Event;
-	import src.screens.ScreenEngine;
-	import src.screens.TitleScreen;
-	import src.userInterface.TitleElement;
-	import src.screens.Screen
-	import src.events.GameObjectEvent;
-	import src.input.KeyboardController;
-	import src.mvc.ModelViewController;
+	import flash.display.Sprite;
+	import flash.ui.GameInputControl;
+	import src.model.GameEngine;
+	import src.view.ViewEngine;
+	
 	/**
-	 * 
 	 * ...
-	 * @author erwin 
-	 * 
-	 * Main class controls handles the screenflow(view) and loads the gameEngine(datamodel)  
+	 * @author erwin henraat
 	 */
-	public class Main extends MovieClip
+	public class Main extends Sprite 
 	{
-
 		private var gameEngine:GameEngine;
-		private var screenEngine:ScreenEngine;
-		private var modelViewController:ModelViewController;
+		private var viewEngine:ViewEngine;
+		private var controlEngine:ControlEngine;
 		
 		public function Main() 
-		{							
-			this.addEventListener(Event.ADDED_TO_STAGE, init);			
-		}			
-		/*
-		 *Wait until the class' object is added to the stage
-		 *Then add objects to the visible screen
-		 */
-		private function init(e:Event):void 
 		{
-			removeEventListener(Event.ADDED_TO_STAGE, init);
-			
-			//Add ScreenEngine
-			screenEngine = new ScreenEngine();
-			addChild(screenEngine);
-			
-			
-			//Add GameEngine
 			gameEngine = new GameEngine();
+			viewEngine = new ViewEngine();
+			controlEngine = new ControlEngine(gameEngine,viewEngine);
+
+			addChild(viewEngine);
 			
-			//Add controller
-			mvc  = new ModelViewController(gameEngine, screenEngine);
+			//add gameEngine to display list to see gameobjects visualisation
+			addChild(gameEngine);
 			
-			
-			
-				
-			
-			
+			//start gameEngine
+			gameEngine.start();
 		}
 		
-		
-
-		
-			
 	}
 
 }
