@@ -15,8 +15,7 @@ package src
 		public function ControlEngine(ge:GameEngine, ve:ViewEngine):void 
 		{
 			_gameEngine = ge;
-			_viewEngine = ve;
-			
+			_viewEngine = ve;			
 			addChild(_gameEngine);
 			addEventListeners();
 		}
@@ -25,8 +24,7 @@ package src
 		 * 
 		 */
 		private function addEventListeners():void 
-		{
-			
+		{			
 			//_gameEngine.addEventListener();
 		}
 		

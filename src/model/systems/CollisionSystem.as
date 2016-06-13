@@ -6,7 +6,7 @@ package src.model.systems
 	 * ...
 	 * @author erwin henraat
 	 */
-	public class CollisionSystem extends GameSystem implements IGameSystem
+	public class CollisionSystem extends GameSystem
 	{
 		
 		public function CollisionSystem() 

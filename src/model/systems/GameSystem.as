@@ -8,7 +8,7 @@ package src.model.systems
 	 * ...
 	 * @author erwin henraat
 	 */
-	public class GameSystem extends Sprite implements IGameSystem
+	public class GameSystem extends Sprite
 	{
 		private var _list:Array;
 		public function get list():Array
@@ -30,7 +30,11 @@ package src.model.systems
 		
 		public function systemAction(go:GameObject):void
 		{
-			//trace("system action performs");
+			trace("abstract system action performs");
+		}
+		public function add(go:GameObject):void
+		{
+			list.push(go);
 		}
 		
 	}

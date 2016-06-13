@@ -2,7 +2,6 @@ package src.model
 {
 	import flash.display.Sprite;
 	import flash.utils.Dictionary;
-	import src.model.abillities.Move;
 	import src.model.gameObjects.GameObject;
 	import src.model.gameObjects.powerups.Powerup;
 	import src.model.gameObjects.projectiles.Projectile;
@@ -20,27 +19,7 @@ package src.model
 	 * @author erwin henraat
 	 */
 	public class GameEngine extends Sprite 
-	{
-		//	public statics to enable the control Engine to catch events Sent by the gameEngine
-		public static const PLAYER_DIES:String = "player dies";
-		
-		public static const UNIT_DIES:String = "unit dies";
-		
-		public static const START_WAVE:String = "start wave";
-		
-		public static const SHOOT_LASER:String = "shoot laser";
-		public static const SHOOT_RAIL_BEAM:String = "shoot rail beam";
-		public static const SHOOT_SPECIAL_BEAM:String = "shoot special beam";
-		
-		public static const CATCH_POWERUP:String = "catch powerup";
-				
-		public static const TRIGGER_WINGMAN_COMBO:String = "wingman combo";					//3 doubles
-		public static const TRIGGER_MAGNETIC_COMBO:String = "magnetic combo";				//3 up arrows
-		public static const TRIGGER_SHRINK_COMBO:String = "shrink combo";					//3 down arrows
-		public static const TRIGGER_RAILBEAM_COMBO:String = "railbeam combo"				//3 diamonds
-		public static const TRIGGER_PERMANENT_LASERSTACK:String = "permanent laserstack";	//3 lightning bolts
-		public static const TRIGGER_SHIELD_COMBO:String = "shield combo";					//4 different powerup types
-
+	{		
 		//game objects are put in different lists depending on its ability each abillity has its own list.
 		private var haveHealth:Array = [];
 		private var areMovable:Array = [];
@@ -103,18 +82,14 @@ package src.model
 				//create a gameobject
 				var p:GameObject = addGameobject(gameObjectTypes[Math.floor(Math.random()*5)]);
 				
-				//create an abillity and add it to the gameobject by referencing the gameobject as an argument
-				if (Math.random() > 0.2)
-				{
-					new Move(p, movementSystem);
-							
-					//change gameobject settings
-					p.movementVector.x = Math.random();
-					p.movementVector.y = Math.random();
-					p.movementVector.speed = Math.random() * 6;
-				
-				}
+				//add gameobject to gamesystems
+				movementSystem.add(p);
+					
 				//change gameobject settings
+				p.movementVector.x = Math.random();
+				p.movementVector.y = Math.random();
+				p.movementVector.speed = Math.random() * 6;
+								
 				p.rotationDegrees = Math.random() * 360;
 				p.x = Math.random() * stage.stageWidth;
 				p.y = Math.random() * stage.stageHeight;

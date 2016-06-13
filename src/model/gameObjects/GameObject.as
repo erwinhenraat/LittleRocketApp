@@ -15,12 +15,14 @@ package src.model.gameObjects
 		private var _rotationRadians:Number = 0;
 		
 		public function GameObject(color:uint) 
-		{				
-			/*
+		{		
+			_movementVector = new MovementVector();
+			
+			
 			this.graphics.beginFill(color, 1);
-			this.graphics.drawCircle(0, 0, 5);
+			this.graphics.drawCircle(0, 0, 4);
 			this.graphics.endFill();
-			*/
+			
 			
 			this.graphics.lineStyle(1,color, 1);
 			this.graphics.moveTo(10, 0);
