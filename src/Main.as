@@ -4,7 +4,7 @@ package src
 	import flash.ui.GameInputControl;
 	import src.model.GameEngine;
 	import src.view.ViewEngine;
-	
+	import src.model.abillities.BoxCollider;
 	/**
 	 * ...
 	 * @author erwin henraat
@@ -26,6 +26,8 @@ package src
 		 */
 		public function Main() 
 		{
+			addChild(new BoxCollider(200, 200));
+			
 			gameEngine = new GameEngine();
 			viewEngine = new ViewEngine();
 			controlEngine = new ControlEngine(gameEngine,viewEngine);
@@ -36,6 +38,10 @@ package src
 			
 			//start gameEngine
 			gameEngine.start();
+			
+			
+			
+		
 		}
 		
 	}

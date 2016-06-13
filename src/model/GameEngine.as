@@ -2,6 +2,10 @@ package src.model
 {
 	import flash.display.Sprite;
 	import flash.utils.Dictionary;
+	import src.model.abillities.BoxCollider;
+	import src.model.abillities.Collider;
+	import src.model.abillities.Movement;
+	import src.model.abillities.Rotation;
 	import src.model.gameObjects.GameObject;
 	import src.model.gameObjects.powerups.Powerup;
 	import src.model.gameObjects.projectiles.Projectile;
@@ -20,17 +24,9 @@ package src.model
 	 */
 	public class GameEngine extends Sprite 
 	{		
-		//game objects are put in different lists depending on its ability each abillity has its own list.
-		private var haveHealth:Array = [];
-		private var areMovable:Array = [];
-		private var canStackLasers:Array = [];
-		private var areMagnetic:Array = [];
-		private var canShield:Array = [];
-		private var canShoot:Array = [];
-		private var canSplit:Array = [];
 		
 		//all projectiles are put in the projectiles array
-		private var projectiles:Array = [];
+		private var gameObjects:Vector.<GameObject>;
 		
 		//game system variables
 		private var movementSystem:MovementSystem;
@@ -39,6 +35,7 @@ package src.model
 		
 		public function GameEngine() 
 		{
+			gameObjects = new Vector.<GameObject>();
 			_gamedataVisible = false;			
 			this.addEventListener(Event.ADDED_TO_STAGE, makeGamedataVisible);
 		}
@@ -59,44 +56,56 @@ package src.model
 		 */
 		private function setupSystems():void 
 		{
-			//setup movementSystem
-			movementSystem = new MovementSystem();
-			collisionSystem = new CollisionSystem();
+			//setup Systems
+			movementSystem = new MovementSystem(gameObjects);
+			collisionSystem = new CollisionSystem(gameObjects);
 		}	
 		
 		/*
 		 * use this function to create the gameobjects at startup
 		 * 
-		 */
-		
-		private var gameObjectTypes:Vector.<Class> = new Vector.<Class>();		
+		 */			
 		private function createStartingGameobjects():void
-		{			
+		{	
+			var gameObjectTypes:Vector.<Class> = new Vector.<Class>();
 			gameObjectTypes[0] = Plane;
 			gameObjectTypes[1] = Enemy;
 			gameObjectTypes[2] = Laser;
 			gameObjectTypes[3] = SpecialBeam;
-			gameObjectTypes[4] = Powerup;			
-			for (var i:int = 0; i < 40; i++) 
-			{				
+			gameObjectTypes[4] = Powerup;
+			
 				//create a gameobject
-				var p:GameObject = addGameobject(gameObjectTypes[Math.floor(Math.random()*5)]);
-				
-				//add gameobject to gamesystems
-				movementSystem.add(p);
-					
-				//change gameobject settings
-				p.movementVector.x = Math.random();
-				p.movementVector.y = Math.random();
-				p.movementVector.speed = Math.random() * 6;
-								
-				p.rotationDegrees = Math.random() * 360;
-				p.x = Math.random() * stage.stageWidth;
-				p.y = Math.random() * stage.stageHeight;
-			}			
+			var go:GameObject = addGameobject(gameObjectTypes[Math.floor(Math.random()*5)]);
+			go.addAbillity(new Movement(1,0,2));
+			go.x = 100;
+			go.y = 500;
+			go.addAbillity(new BoxCollider(100,100));
+			
+			var go2:GameObject = addGameobject(gameObjectTypes[Math.floor(Math.random()*5)]);
+			go2.addAbillity(new Movement(-1,0,2));
+			go2.x = 200;
+			go2.y = 500;
+			//go.addAbillity(new BoxCollider(10,10));
+		
 			
 			
 		}
+		/*
+		 * function dynamiccaly creates gameobject bij type
+		 * also enables rendering when _gamedataVisible is true
+		 */
+		private function addGameobject(ClassType:Class):GameObject
+		{
+			var go:GameObject = new ClassType();
+			gameObjects.push(go);
+			if (_gamedataVisible)
+			{
+				addChild(go);
+				go.visible = true;
+			}
+			return go;
+			
+		}	
 		/*
 		 * function reacts to the Event.ADDED_TO_STAGE event and enables data visualisation
 		 * 
@@ -106,21 +115,7 @@ package src.model
 			removeEventListener(Event.ADDED_TO_STAGE, makeGamedataVisible);
 			_gamedataVisible = true;
 		}
-		/*
-		 * function dynamiccaly creates gameobject bij type
-		 * also enables rendering when _gamedataVisible is true
-		 */
-		private function addGameobject(ClassType:Class):GameObject
-		{
-			var go:GameObject = new ClassType();
-			if (_gamedataVisible)
-			{
-				addChild(go);
-				go.visible = true;
-			}
-			return go;
-			
-		}	
+		
 		
 	}
 

@@ -1,8 +1,12 @@
 package src.model.systems 
 {
 	import flash.display.Sprite;
+	import src.model.abillities.Abillity;
+	import src.model.abillities.Movement;
 	import src.model.gameObjects.GameObject;
 	import flash.events.Event;
+	import src.utils.MovementVector;
+	
 
 	/**
 	 * ...
@@ -10,19 +14,26 @@ package src.model.systems
 	 */
 	public class MovementSystem extends GameSystem
 	{		
-		public function MovementSystem():void
-		{				
-					
+		public function MovementSystem(gameObjects:Vector.<GameObject>):void
+		{						
+			nescesary = Movement;
+			
+			super(gameObjects);
 		}					
-		/*	Method is triggerd by parent class and persorms the movement of the gameobjects
+		/*	Method is triggerd by parent class and persorm the movement of the gameobjects
 		 * 
 		 * 
-		 */
-		public override function systemAction(go:GameObject):void 
+		 */		
+		protected override function systemAction(go:GameObject):void 
 		{
-			go.x += go.movementVector.x * go.movementVector.speed;
-			go.y += go.movementVector.y * go.movementVector.speed;
-			go.rotation = go.rotationDegrees;			
+			//var movementVector:MovementVector = go.abillities[GetClassName.getNameFromClass(Movement)].movementVector;
+			var movementVector:MovementVector = go.abillities[Movement].movementVector;
+			go.x += movementVector.x * movementVector.speed;
+			go.y += movementVector.y * movementVector.speed;
+			go.rotation += go.abillities[Movement].rotationDegrees;
+			
+			
+			
 		}	
 		
 	}
