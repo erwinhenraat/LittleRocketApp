@@ -2,6 +2,7 @@ package src.model
 {
 	import flash.display.Sprite;
 	import flash.utils.Dictionary;
+	import src.model.abillities.Health;
 	import src.model.colliders.BoxCollider;
 	import src.model.colliders.CircleCollider;
 	import src.model.colliders.Collider;
@@ -16,9 +17,10 @@ package src.model
 	import src.model.gameObjects.units.Enemy;
 	import src.model.gameObjects.units.Plane;
 	import src.model.systems.CollisionSystem;
+	import src.model.systems.HealthSystem;
 	import src.model.systems.MovementSystem;
 	import flash.events.Event;
-	
+	import src.model.events.GameEvent;
 	/**
 	 * ...
 	 * @author erwin henraat
@@ -33,6 +35,7 @@ package src.model
 		private var movementSystem:MovementSystem;
 		private var _gamedataVisible:Boolean;
 		private var collisionSystem:CollisionSystem;
+		private var healthSystem:HealthSystem;
 		
 		public function GameEngine() 
 		{
@@ -60,7 +63,20 @@ package src.model
 			//setup Systems
 			movementSystem = new MovementSystem(gameObjects);
 			collisionSystem = new CollisionSystem(gameObjects);
+			collisionSystem.addEventListener(GameEvent.COLLISION, onGOCollision);
+			healthSystem = new HealthSystem()
 		}			
+		
+		private function onGOCollision(e:GameEvent):void 
+		{
+			var go:GameObject = e.target as GameObject;
+			var hc:Health = go.abillities[Health] as Health;
+			if (hc != null)
+			{
+				trace("!!!!!");
+				hc.amount--;
+			}
+		}
 		/*
 		 * use this function to create the gameobjects at startup
 		 * 
@@ -79,18 +95,30 @@ package src.model
 			go.addAbillity(new Movement(1,0,2));
 			go.x = 100;
 			go.y = 500;
-			go.addCollider(new BoxCollider(100,100));
+			go.addAbillity(new Health(10, go));
+			go.addCollider(new BoxCollider(100, 100));
+			
 			
 			var go2:GameObject = addGameobject(gameObjectTypes[Math.floor(Math.random()*5)]);
 			go2.addAbillity(new Movement(-1,0,2));
 			go2.x = 200;
 			go2.y = 500;
-			go2.addCollider(new BoxCollider(50, 50));
+			go2.addCollider(new CircleCollider(50));
+			go2.addAbillity(new Health(10, go2));
 		
 			var go3:GameObject = addGameobject(gameObjectTypes[Math.floor(Math.random() * 5)]);
 			go3.addAbillity(new Movement(0.6, 0.3, 3));
 			go3.addCollider(new CircleCollider(50));
+						
+			go.addEventListener(GameEvent.GAMEOBJECT_DIES, removeGameobject);
 			
+		}
+		
+		private function removeGameobject(e:GameEvent):void 
+		{
+			var go:GameObject = e.target as GameObject;
+			gameObjects.splice(gameObjects.indexOf(go), 1);
+			if (this.contains(go)) removeChild(go);
 		}
 		/*
 		 * function dynamiccaly creates gameobject bij type

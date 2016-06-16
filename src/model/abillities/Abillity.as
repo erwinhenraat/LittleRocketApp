@@ -2,20 +2,26 @@ package src.model.abillities
 {
 	import flash.display.Shape;
 	import flash.display.Sprite;
+	import flash.events.EventDispatcher;
+	import src.model.gameObjects.GameObject;
 	
 	
 	/**
 	 * ...
 	 * @author erwin henraat
 	 */
-	public class Abillity 
+	public class Abillity extends EventDispatcher
 	{
-		public static const MOVEMENT:String = "Movement";
-		public function Abillity() 
+		private var _gameObject:GameObject;
+		public function Abillity(gameObject:GameObject = null) 
 		{
+			_gameObject = gameObject;
+		}
+		public function get gameObject():GameObject
+		{ 
+			return _gameObject; 
 			
 		}
-		
 	}
 
 }

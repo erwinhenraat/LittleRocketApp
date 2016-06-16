@@ -14,7 +14,7 @@ package src.model.systems
 		protected var _gameObjects:Vector.<GameObject>;
 		protected var nescesary:Class;
 		protected var specifficGOAbillity:Abillity;		
-		public function GameSystem(gameObjects:Vector.<GameObject>) 
+		public function GameSystem(gameObjects:Vector.<GameObject> = null) 
 		{
 			_gameObjects = gameObjects;
 			this.addEventListener(Event.ENTER_FRAME, loop);	

@@ -12,6 +12,7 @@ package src.model.abillities
 		private var _rotationRadians:Number = 0;
 		public function Movement(xMove:Number, yMove:Number, speed:Number, rot:Number = 0) 
 		{
+			super();
 			_movementVector = new MovementVector();
 			_movementVector.x = xMove;
 			_movementVector.y = yMove;

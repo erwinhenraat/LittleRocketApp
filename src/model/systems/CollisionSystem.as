@@ -1,11 +1,11 @@
 package src.model.systems 
 {
-	import fl.controls.NumericStepper;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.utils.Dictionary;
 	import src.model.colliders.BoxCollider;
 	import src.model.colliders.CircleCollider;
+	import src.model.events.GameEvent;
 	import src.model.gameObjects.GameObject;
 	import src.model.gameObjects.projectiles.Projectile;
 	import src.model.colliders.Collider;
@@ -43,13 +43,25 @@ package src.model.systems
 				if (go == other) continue;
 				if(go.collider is BoxCollider)
 				{					
+					if (dx < go.collider.width / 2 + other.collider.width / 2 && dy < go.collider.height / 2 + other.collider.height / 2)
+					{
+						go.dispatchEvent(new GameEvent(GameEvent.COLLISION));
+						other.dispatchEvent(new GameEvent(GameEvent.COLLISION));
+						
+						//trace(go + " hits " +other);
+					}
 					//trace("BOX COLLIDER");
 				}
 				else if (go.collider is CircleCollider)
 				{					
 					//trace("circle collision");
-					
-					if( Math.atan2(dy,dx) < )
+					var collider:CircleCollider = go.collider as CircleCollider;
+					if ( Math.atan2(dy, dx) < collider.range)
+					{
+						go.dispatchEvent(new GameEvent(GameEvent.COLLISION));
+						other.dispatchEvent(new GameEvent(GameEvent.COLLISION));
+						
+					}
 					
 				}					
 				

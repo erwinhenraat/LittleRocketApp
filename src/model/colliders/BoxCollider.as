@@ -13,7 +13,8 @@ package src.model.colliders
 			this.graphics.drawRect( -w/2, -h/2, w, h);
 			this.graphics.endFill();
 			
-			
+			this.width = w;
+			this.height = h;
 		}
 		
 		

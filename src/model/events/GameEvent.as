@@ -13,7 +13,7 @@ package src.model.events
 		//	public statics to enable the control Engine to catch events Sent by the gameEngine
 		public static const PLAYER_DIES:String = "player dies";
 		
-		public static const UNIT_DIES:String = "unit dies";
+		public static const GAMEOBJECT_DIES:String = "unit dies";
 		
 		public static const START_WAVE:String = "start wave";
 		
@@ -30,6 +30,11 @@ package src.model.events
 		public static const TRIGGER_PERMANENT_LASERSTACK:String = "permanent laserstack";	//3 lightning bolts
 		public static const TRIGGER_SHIELD_COMBO:String = "shield combo";					//4 different powerup types
 
+		public static const COLLISION:String = "collision";
+		
+		public static const HEALTH_COMPONENT_ADDED:String = "health component added";
+		
+		
 		public function GameEvent(type:String, bubbles:Boolean=false, cancelable:Boolean=false) 
 		{ 
 			super(type, bubbles, cancelable);			
