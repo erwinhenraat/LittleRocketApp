@@ -167,12 +167,27 @@ package src.oldCode
 				var minusOne:TextField = new Message(this, 100, "lose a wave ");
 				addChild(minusOne);
 			}
-			newWave();
+			
+		//	trace("!!!");
+			//placeWaveMessage();
+			
+			waitForWaveMessage();
+			
 			addChild(ui);
 			
 			combo = new Combobar(this);
 			addChild(combo);
 		
+		}
+		private var wait:Timer = new Timer(1000,1);
+		private function waitForWaveMessage():void 
+		{
+		//	trace("wait for message");
+			if(!wait.running){
+			
+				wait.addEventListener(TimerEvent.TIMER_COMPLETE, endWaitForMessage);
+				wait.start();
+			}
 		}
 		
 		/*
@@ -198,9 +213,9 @@ package src.oldCode
 		   }
 		 */
 		private var waveMessage:MovieClip = new libNewWave();
-		private function newWave()
+		private function placeWaveMessage()
 		{
-			
+			//trace("call new wave timers");
 			if (!contains(waveMessage)) 
 			{
 				
@@ -209,16 +224,30 @@ package src.oldCode
 				ui.addChild(waveMessage);
 			}
 			
-			waveMessage.play();
+			waveMessage.gotoAndPlay(1);
 			waveMessage.visible = true;
+			
 			var t:Timer = new Timer(3000, 1);
 			t.addEventListener(TimerEvent.TIMER_COMPLETE, removeWaveMessage);
 			t.start();
 			
-			numEnemiesToSpawn = 5 + Math.ceil(wave / 4);//tweakpunt 3: "Formule die bepaalt hoeveel vijanden er zijn per wave."
+			var endMessageTimer:Timer = new Timer(1000, 1);
+			endMessageTimer.addEventListener(TimerEvent.TIMER, placeUnitsForWave);
+			endMessageTimer.start();
 			
+			
+		}		
+		private function placeUnitsForWave(e:TimerEvent):void 
+		{
+			//trace("create units")
+			e.target.removeEventListener(TimerEvent.TIMER, placeUnitsForWave);
+			
+			numEnemiesToSpawn = 5 + Math.ceil(wave / 4);//tweakpunt 3: "Formule die bepaalt hoeveel vijanden er zijn per wave."
+			/*
 			var newWaveText:TextField = new Message(this, 150, "Wave " + wave); //tweakpunt 4: "Bericht bij een nieuwe wave."
 			addChild(newWaveText);
+			*/
+			
 			spawnEnemies(numEnemiesToSpawn);
 			if (wave >= 4)//tweakpunt 5: "Vanaf welke wave komen er speciale gouden enemies?"
 			{
@@ -226,10 +255,12 @@ package src.oldCode
 				spawnSplicers(num);
 			}
 			
+			
 		}
 		
 		private function removeWaveMessage(e:TimerEvent):void 
 		{
+			e.target.removeEventListener(TimerEvent.TIMER_COMPLETE, removeWaveMessage);
 			waveMessage.gotoAndStop(1);
 			waveMessage.visible = false;
 		}
@@ -434,8 +465,8 @@ package src.oldCode
 			if (enemies.length == 0)
 			{
 				//nextWave
-				wave++;
-				newWave();
+				waitForWaveMessage();
+				
 			}
 			//update player
 			if (plane != null)
@@ -601,6 +632,13 @@ package src.oldCode
 					snd.play();
 				}
 			}
+		}
+		
+		private function endWaitForMessage(e:TimerEvent):void 
+		{
+			e.target.removeEventListener(TimerEvent.TIMER_COMPLETE, endWaitForMessage);
+			wave++;
+			placeWaveMessage();
 		}
 		
 		private function destroyGame(e:TimerEvent):void

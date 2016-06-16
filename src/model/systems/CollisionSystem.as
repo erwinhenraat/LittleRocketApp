@@ -49,7 +49,7 @@ package src.model.systems
 				{					
 					//trace("circle collision");
 					
-					if(go.collider.x )
+					if( Math.atan2(dy,dx) < )
 					
 				}					
 				
