@@ -184,7 +184,7 @@ package src.oldCode
 		{
 		//	trace("wait for message");
 			if(!wait.running){
-			
+				betweenWaves = true;
 				wait.addEventListener(TimerEvent.TIMER_COMPLETE, endWaitForMessage);
 				wait.start();
 			}
@@ -213,6 +213,7 @@ package src.oldCode
 		   }
 		 */
 		private var waveMessage:MovieClip = new libNewWave();
+		private var betweenWaves:Boolean = false;
 		private function placeWaveMessage()
 		{
 			//trace("call new wave timers");
@@ -255,7 +256,7 @@ package src.oldCode
 				spawnSplicers(num);
 			}
 			
-			
+			betweenWaves = false;
 		}
 		
 		private function removeWaveMessage(e:TimerEvent):void 
@@ -462,7 +463,7 @@ package src.oldCode
 				if (powerup.destroy) powerup.remove();
 			}
 			//new wave if all enemies are gone
-			if (enemies.length == 0)
+			if (enemies.length == 0 && !betweenWaves)
 			{
 				//nextWave
 				waitForWaveMessage();
