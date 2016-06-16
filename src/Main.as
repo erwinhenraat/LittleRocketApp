@@ -4,7 +4,7 @@ package src
 	import flash.ui.GameInputControl;
 	import src.model.GameEngine;
 	import src.view.ViewEngine;
-	import src.model.abillities.BoxCollider;
+	import src.model.colliders.BoxCollider;
 	/**
 	 * ...
 	 * @author erwin henraat
@@ -26,7 +26,7 @@ package src
 		 */
 		public function Main() 
 		{
-			addChild(new BoxCollider(200, 200));
+			//addChild(new BoxCollider(200, 200));
 			
 			gameEngine = new GameEngine();
 			viewEngine = new ViewEngine();

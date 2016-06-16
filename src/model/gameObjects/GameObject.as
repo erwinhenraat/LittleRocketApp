@@ -1,6 +1,7 @@
 package src.model.gameObjects 
 {
 	import fl.motion.Color;
+	import src.model.colliders.Collider;
 	
 	import flash.display.Sprite;
 	import flash.utils.Dictionary;
@@ -15,6 +16,11 @@ package src.model.gameObjects
 	public class GameObject extends Sprite 
 	{
 		private var _abillities:Dictionary
+		private var _collider:Collider;
+		public function get collider():Collider
+		{
+			return _collider;			
+		}
 		public function get abillities():Dictionary
 		{			
 			return _abillities;
@@ -41,24 +47,17 @@ package src.model.gameObjects
 			this.visible = false;
 		}	
 		public function addAbillity(abillity:Abillity):void
-		{			
-			/*
-			var abillityName:String = getQualifiedClassName(abillity) as String;
-			var index:int = abillityName.indexOf(":") + 2;
-			abillityName = abillityName.slice(index, abillityName.length);
-			*/
-			
-			
+		{				
 			var AbillityClass:Class = Object(abillity).constructor; 
 			_abillities[AbillityClass] = abillity;
 			
-			addChild(abillity);
-			
-			//_abillities.push(abillity);
-			
-			
-			
+						
 		}		
+		public function addCollider(collider:Collider):void
+		{
+			_collider = collider;
+			addChild(collider);
+		}
 		
 	}
 

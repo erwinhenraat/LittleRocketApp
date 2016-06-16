@@ -8,7 +8,7 @@ package src.model.abillities
 	 * ...
 	 * @author erwin henraat
 	 */
-	public class Abillity extends Sprite 
+	public class Abillity 
 	{
 		public static const MOVEMENT:String = "Movement";
 		public function Abillity() 

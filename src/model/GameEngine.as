@@ -2,8 +2,9 @@ package src.model
 {
 	import flash.display.Sprite;
 	import flash.utils.Dictionary;
-	import src.model.abillities.BoxCollider;
-	import src.model.abillities.Collider;
+	import src.model.colliders.BoxCollider;
+	import src.model.colliders.CircleCollider;
+	import src.model.colliders.Collider;
 	import src.model.abillities.Movement;
 	import src.model.abillities.Rotation;
 	import src.model.gameObjects.GameObject;
@@ -59,8 +60,7 @@ package src.model
 			//setup Systems
 			movementSystem = new MovementSystem(gameObjects);
 			collisionSystem = new CollisionSystem(gameObjects);
-		}	
-		
+		}			
 		/*
 		 * use this function to create the gameobjects at startup
 		 * 
@@ -74,20 +74,22 @@ package src.model
 			gameObjectTypes[3] = SpecialBeam;
 			gameObjectTypes[4] = Powerup;
 			
-				//create a gameobject
+			//create a gameobject
 			var go:GameObject = addGameobject(gameObjectTypes[Math.floor(Math.random()*5)]);
 			go.addAbillity(new Movement(1,0,2));
 			go.x = 100;
 			go.y = 500;
-			go.addAbillity(new BoxCollider(100,100));
+			go.addCollider(new BoxCollider(100,100));
 			
 			var go2:GameObject = addGameobject(gameObjectTypes[Math.floor(Math.random()*5)]);
 			go2.addAbillity(new Movement(-1,0,2));
 			go2.x = 200;
 			go2.y = 500;
-			//go.addAbillity(new BoxCollider(10,10));
+			go2.addCollider(new BoxCollider(50, 50));
 		
-			
+			var go3:GameObject = addGameobject(gameObjectTypes[Math.floor(Math.random() * 5)]);
+			go3.addAbillity(new Movement(0.6, 0.3, 3));
+			go3.addCollider(new CircleCollider(50));
 			
 		}
 		/*

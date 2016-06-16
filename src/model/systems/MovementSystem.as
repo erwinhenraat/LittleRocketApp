@@ -20,18 +20,29 @@ package src.model.systems
 			
 			super(gameObjects);
 		}					
-		/*	Method is triggerd by parent class and persorm the movement of the gameobjects
-		 * 
-		 * 
-		 */		
+		protected override function loop(e:Event):void
+		{	
+			for each(var go:GameObject in _gameObjects)
+			{
+				for each(var k in go.abillities)
+				{
+					var value:Abillity = Abillity(k);
+					if (value is nescesary)
+					{
+						specifficGOAbillity = value;
+						systemAction(go)
+					}				
+				}
+			}
+		
+		}
 		protected override function systemAction(go:GameObject):void 
 		{
 			//var movementVector:MovementVector = go.abillities[GetClassName.getNameFromClass(Movement)].movementVector;
 			var movementVector:MovementVector = go.abillities[Movement].movementVector;
 			go.x += movementVector.x * movementVector.speed;
 			go.y += movementVector.y * movementVector.speed;
-			go.rotation += go.abillities[Movement].rotationDegrees;
-			
+			go.rotation += go.abillities[Movement].rotationDegrees;			
 			
 			
 		}	
