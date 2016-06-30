@@ -17,8 +17,13 @@ package src.oldCode
 			this.gotoAndStop(1);
 			
 		}		
+		public function animate():void
+		{
+			this.play();
+		}
 		public function animateOnce():void
 		{
+			trace("animate once");
 			this.play();
 			this.addEventListener(Event.ENTER_FRAME, checkEnd);
 		}

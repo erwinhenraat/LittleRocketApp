@@ -18,6 +18,8 @@ package src.oldCode
 	public class Combobar extends MovieClip
 	{
 		public var fading = false;
+		static public const PAIR_FOUND:String = "pairFound";
+		static public const TRIPPLE_FOUND:String = "trippleFound";
 		//private var order:Array;
 		
 		private var iconToCheck:Number;
@@ -33,23 +35,30 @@ package src.oldCode
 		private var numReached:int;
 		private var middle:Number;
 		private var uiCards:Array = [];
-		
+		private var collector:MovieClip;
 		
 		public function Combobar($main:Main) 
 		{
 			main = $main;
-			y = main.stage.stageHeight - 20;
+			y = main.stage.stageHeight;
 			//main.addChild(this);		
 			//initBar();			
 			
 			this.addEventListener(Event.ADDED_TO_STAGE, init);
 			
+			collector = new libCollector();
+			addChild(collector);
+			collector.y - collector.height;
+			
 			//addTheUICards
 			for (var i:int = 0; i < 5; i++) 
 			{
-				addChild(uiCards.push(new UICard()));
-				uiCards[i].x = 100 + 85 * i;//
-				uiCards[i].y = 500;//
+				uiCards.push(new UICard());
+				addChild(uiCards[i]);
+				uiCards[i].x = 85 * i;//
+				uiCards[i].y = -110;//
+				
+				
 			}
 			
 			
@@ -126,9 +135,12 @@ package src.oldCode
 					var pu:MovieClip = new libPowerUp();
 					icons.push(pu);
 					pu.gotoAndStop($label);
-					pu.x = (icons.length - 1) * (pu.width + 5) + 25;
+					
+					pu.y = - uiCards[0].height / 2;
+					pu.x = uiCards[0].width / 2 +  ((icons.length - 1) * uiCards[0].width);//(icons.length - 1) * (pu.width + 5) + 25;
+					pu.position = (icons.length - 1);
 					addChild(pu);
-					if (icons.length >= 3 )
+					if (icons.length >= 3)
 					{
 						checkIcons($label);
 					}				
@@ -137,7 +149,7 @@ package src.oldCode
 			}			
 				
 		}
-		private var _iconsToAnimate:Array = [];
+		private var iconsChecked:Boolean = false;
 		private function checkIcons($label:String):void 
 		{		
 			var foundItems:Array = [["double",0,[]], ["45angle",0,[]], ["90angle",0,[]], ["rapid",0,[]], ["special",0,[]]];
@@ -152,17 +164,16 @@ package src.oldCode
 						{
 							foundItems[icons[i].currentFrame-1][0] = icons[i].currentLabel;//label van het icon
 							foundItems[icons[i].currentFrame-1][1]++;//hoeveelheid gevonden items
-							foundItems[icons[i].currentFrame-1][2].push(icons[i]);//icon object reference
-							
-							
+						
+							foundItems[icons[i].currentFrame-1][2].push(icons[i]);//icon object reference							
 							
 						}
 					}
 				}
 			}
-		
-			trace("this is the collection"+ collection);
 			
+			
+		
 			var pairfound:Boolean = false;
 			var tripletFound:Boolean = false;
 			
@@ -171,18 +182,29 @@ package src.oldCode
 				if (foundItems[k][1] >= 3)
 				{					
 					//-----------3 dezelfde gevonden----------------
-					_iconsToAnimate = [];
-					_iconsToAnimate.push(foundItems[k][2][2]);
-					dispatchEvent(new Event(Combobar.PAIR_FOUND));
+					uiCards[foundItems[k][2][0].position].animateOnce();
+					uiCards[foundItems[k][2][1].position].animateOnce();
+					uiCards[foundItems[k][2][2].position].animateOnce();
+					//dispatchEvent(new Event(Combobar.PAIR_FOUND));
 					tripletFound = true;
 					break;
 				}
+				//Weird bug
+				//Does only run when there's 3 or more pickups
+				//!!!!!!!!!!!!!!!! WIP !!!!!!!!!!!!!!!
+				//trace("fi" + foundItems[k][1]);
 				if (foundItems[k][1] == 2)
-				{					
-					_iconsToAnimate = [];
-					_iconsToAnimate.push(foundItems[k][2][0]);
-					_iconsToAnimate.push(foundItems[k][2][1]);
-					dispatchEvent(new Event(Combobar.TRIPPLE_FOUND));
+				{		
+					//trace("?????" + icons.length);
+					
+					//trace("pos" + foundItems[k][2][2][0].position);
+					if (icons.length < 4)
+					{
+						uiCards[foundItems[k][2][0].position].animateOnce();
+						uiCards[foundItems[k][2][1].position].animateOnce();
+					}
+					
+					//dispatchEvent(new Event(Combobar.TRIPPLE_FOUND));
 					pairfound = true;
 					break;
 				}
