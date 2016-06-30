@@ -32,7 +32,7 @@ package src.oldCode
 		private var aantalIcons:Number;
 		private var numReached:int;
 		private var middle:Number;
-	
+		private var uiCards:Array = [];
 		
 		
 		public function Combobar($main:Main) 
@@ -43,6 +43,15 @@ package src.oldCode
 			//initBar();			
 			
 			this.addEventListener(Event.ADDED_TO_STAGE, init);
+			
+			//addTheUICards
+			for (var i:int = 0; i < 5; i++) 
+			{
+				addChild(uiCards.push(new UICard()));
+				uiCards[i].x = 100 + 85 * i;//
+				uiCards[i].y = 500;//
+			}
+			
 			
 		}			
 		
@@ -128,10 +137,10 @@ package src.oldCode
 			}			
 				
 		}
-		
+		private var _iconsToAnimate:Array = [];
 		private function checkIcons($label:String):void 
 		{		
-			var foundItems:Array = [["double",0], ["45angle",0], ["90angle",0], ["rapid",0], ["special",0]];
+			var foundItems:Array = [["double",0,[]], ["45angle",0,[]], ["90angle",0,[]], ["rapid",0,[]], ["special",0,[]]];
 			
 			for (var i:int = 0; i < icons.length; i++) 
 			{
@@ -141,29 +150,47 @@ package src.oldCode
 					{
 						if (icons[i].currentLabel == icons[j].currentLabel)
 						{
-							foundItems[icons[i].currentFrame-1][0] = icons[i].currentLabel;//1010 term undefined
-							foundItems[icons[i].currentFrame-1][1]++;
+							foundItems[icons[i].currentFrame-1][0] = icons[i].currentLabel;//label van het icon
+							foundItems[icons[i].currentFrame-1][1]++;//hoeveelheid gevonden items
+							foundItems[icons[i].currentFrame-1][2].push(icons[i]);//icon object reference
+							
+							
+							
 						}
 					}
 				}
 			}
 		
-			var pairfound = false;
-			var tripletFound = false;
+			trace("this is the collection"+ collection);
+			
+			var pairfound:Boolean = false;
+			var tripletFound:Boolean = false;
+			
 			for (var k:int = 0; k < foundItems.length; k++) 
 			{
 				if (foundItems[k][1] >= 3)
 				{					
 					//-----------3 dezelfde gevonden----------------
+					_iconsToAnimate = [];
+					_iconsToAnimate.push(foundItems[k][2][2]);
+					dispatchEvent(new Event(Combobar.PAIR_FOUND));
 					tripletFound = true;
 					break;
 				}
 				if (foundItems[k][1] == 2)
 				{					
+					_iconsToAnimate = [];
+					_iconsToAnimate.push(foundItems[k][2][0]);
+					_iconsToAnimate.push(foundItems[k][2][1]);
+					dispatchEvent(new Event(Combobar.TRIPPLE_FOUND));
 					pairfound = true;
 					break;
 				}
-			}			
+			}		
+			
+			
+			//			
+			
 			if (tripletFound)
 			{
 				
@@ -309,16 +336,7 @@ package src.oldCode
 		}
 		
 		private function powerupRapidInsanity():void 
-		{
-			
-			/*
-			main.plane.activate45Angle(160, true);
-			main.plane.activate90Angle(160, true);
-			main.plane.activate180Angle(80, true);
-			main.plane.activateRapid(80, true);
-			main.plane.activateDouble(160, true);
-			*/
-			
+		{			
 			main.plane.activatePowerup(main.plane.powerupTypes.rapid, 5, true);
 			main.plane.activatePowerup(main.plane.powerupTypes.double, 5, true);
 			main.plane.activatePowerup(main.plane.powerupTypes.degrees45, 5, true);
