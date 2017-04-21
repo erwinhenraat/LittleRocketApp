@@ -32,7 +32,7 @@ package src.oldCode
 				break;
 			}		
 			
-			this.scaleX = this.scaleY = 1.5;
+			this.scaleX = this.scaleY = 1;
 		}		
 		public function update():void 
 		{
