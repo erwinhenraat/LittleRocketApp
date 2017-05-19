@@ -19,7 +19,7 @@ package src.oldCode
 	 * 14 - laser pas verwijderen 1 frame nadat het een enemy raakt - v
 	 * 15 - 	on death 3 letters invullen top 10
 	 * 16 - horizontal flying bullets must be removed offscreen - v
-	 * 17 - 	use objectpooling to increase performance @ wave spawning
+	 * 17 - 	use objectpooling enemie & lasers to increase performance @ wave spawning  - !!!! object pooling done but creates a bug with invisible enemies after wave 8?!
 	 * 18 - 	refactor using class diagram
 	 * 
 	 * */
@@ -46,12 +46,17 @@ package src.oldCode
 		public var plane:Plane;
 		public var wingmen:Array = new Array();
 		public var space:Level;
-		public var lasers:Array = new Array();
+		public var lasers:Vector.<Laser> = new Vector.<Laser>();
+		public var laserPool:Vector.<Laser> = new Vector.<Laser>();		
+		public var rapidLaserPool:Vector.<Laser> = new Vector.<Laser>();
+		
+		
 		private var scrollSpeed:Number = 4; // tweakpunt 1: "Snelheid waarmee de achtergrond voorbij komt."
 		
 		
 		public var enemies:Vector.<Enemy> = new Vector.<Enemy>();
 		public var enemyPool:Vector.<Enemy> = new Vector.<Enemy>();//Work in progress -- need object poolng to improve performance in higher waves.
+		public var splicerPool:Vector.<SplicerEnemy> = new Vector.<SplicerEnemy>();
 		
 		
 		public var explosions:Array = new Array();
@@ -86,7 +91,7 @@ package src.oldCode
 		public function Main()
 		{
 			this.addEventListener(Event.ADDED_TO_STAGE, init);
-		
+			createPools();
 			//Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
 		}
 		
@@ -155,6 +160,8 @@ package src.oldCode
 			plane = new Plane(this, stage.stageWidth / 2, stage.stageHeight); //tweakpunt 2: "Beginpositie van het schip."
 			ui = new UserInterface();
 			
+			
+			
 			addChild(space);
 			
 			addChild(plane);
@@ -178,6 +185,20 @@ package src.oldCode
 			combo = new Combobar(this);
 			addChild(combo);
 		
+		}
+		
+		private function createPools():void 
+		{
+			for (var i:int = 0; i < 50; i++ ){
+				enemyPool.push(new Enemy(this));
+			}
+			for (i = 0; i < 10; i++ ){
+				splicerPool.push(new SplicerEnemy(this));
+			}
+			for (i = 0; i < 101; i++ ){
+				laserPool.push(new Laser());
+				rapidLaserPool.push(new libRapidLaser());
+			}
 		}
 		private var wait:Timer = new Timer(1000,1);
 		private function waitForWaveMessage():void 
@@ -272,7 +293,14 @@ package src.oldCode
 			{
 				var xpos:Number;
 				var ypos:Number;
-				var e:Enemy = new Enemy(this);
+				
+				
+				//initialize enemy
+				//var e:Enemy = new Enemy(this);
+				var e:Enemy = enemyPool[i];
+				enemyPool.splice(i, 1);
+				
+				
 				var waveStartDistance:Number = 500;
 				e.addEventListener(Enemy.ENEMY_DIES, onEnemyDeath);
 				enemies.push(e);
@@ -358,9 +386,12 @@ package src.oldCode
 		{
 			for (var i:int = 0; i < number; i++)
 			{
-				var e:SplicerEnemy = new SplicerEnemy(this);
+				var e:SplicerEnemy = splicerPool[i];//new SplicerEnemy(this);
+												
 				e.addEventListener(Enemy.ENEMY_DIES, onEnemyDeath);
 				enemies.push(e);
+				splicerPool.splice(i, 1);
+				
 				addChild(e);
 				e.x = 10 + Math.round(Math.random() * stage.stageWidth - 20);
 				e.y = -100;
@@ -412,9 +443,19 @@ package src.oldCode
 				if (lasers[l].toRemove)
 				{
 					removeChild(lasers[l]);
+					if(lasers[l] is libRapidLaser){
+						rapidLaserPool.push(lasers[l]);
+					}else{
+						laserPool.push(lasers[l]);
+					}					
 					lasers.splice(l, 1);
+					
+					//trace("laserpool " + laserPool.length);
+					//trace("rapidlaserpool " + rapidLaserPool.length);
 				}
 			}
+			
+			
 		
 			
 			
@@ -487,6 +528,8 @@ package src.oldCode
 			//scroll background
 			space.scroll(scrollSpeed);
 			//update lasers
+			
+			
 			for (var i:int = 0; i < lasers.length; i++)
 			{
 				lasers[i].update();
@@ -496,6 +539,8 @@ package src.oldCode
 				}
 			}
 			//update enemies
+		//	trace(enemies.length);
+			
 			for (var j:int = 0; j < enemies.length; j++)
 			{
 				enemies[j].update();
@@ -547,9 +592,11 @@ package src.oldCode
 							var dx:Number = Math.abs(enemies[j].x - lasers[k].x);
 							var dy:Number = Math.abs(enemies[j].y - lasers[k].y);
 							var d:Number = Math.sqrt((dx * dx) + (dy * dy));
-							if (d < lasers[k].range)
+							
+							var mag:Magnet = lasers[k] as Magnet;
+							if (d < mag.range)
 							{
-								var rad:Number = Math.atan2((enemies[j].y - lasers[k].y), (enemies[j].x - lasers[k].x))//radians
+								var rad:Number = Math.atan2((enemies[j].y -mag.y), (enemies[j].x - mag.x))//radians
 								enemies[j].xSpeed = -(Math.cos(rad) * (d / 20));
 								enemies[j].ySpeed = -(Math.sin(rad) * (d / 20));
 							}

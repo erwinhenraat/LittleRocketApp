@@ -42,6 +42,7 @@ package src.oldCode
 		public var base:MovieClip;
 		public var shielded:Boolean = false;
 		
+		
 		public function Plane($main:Main, $x:Number, $y:Number) 
 		{
 			main = $main;
@@ -135,7 +136,21 @@ package src.oldCode
 			lastx = x;
 			lasty = y;
 		}	
-		
+		private function unpool(type:String = "normal"):Laser
+		{
+			var l:Laser;
+			switch(type){
+				case "rapid":
+					l = main.rapidLaserPool[0];//new libRapidLaser();
+					main.rapidLaserPool.splice(0, 1);
+					break;
+				case "normal": 
+					l = main.laserPool[0];//new libRapidLaser();
+					main.laserPool.splice(0, 1);
+					break;				
+			}
+			return l;
+		}
 		public function shoot():void 
 		{
 			//schieten
@@ -152,16 +167,18 @@ package src.oldCode
 			if (rapidShotsLeft > 0) 
 			{
 				rapidShotsLeft--;
-				l = new libRapidLaser();
+				l = unpool("rapid");//main.rapidLaserPool[0];//new libRapidLaser();
+				
 				reloadTimer.delay = 35; //tweaken 5: "Snelheid waarmee het schip snelle kogels schiet."
 			} 
 			else
 			{
-				l = new Laser();	
+				l = unpool();//new Laser();	
+				
 			}					
 			main.addChild(l);
-			
 			main.lasers.push(l);
+			
 			
 			if (doubleShotsLeft > 0) 
 			{
@@ -169,7 +186,7 @@ package src.oldCode
 				l.x = x-16;
 									
 				var l2:Laser;
-				if (rapidShotsLeft > 0){ l2 = new libRapidLaser();}else{l2 = new Laser();}
+				if (rapidShotsLeft > 0){ l2 = unpool("rapid")}else{l2 = unpool(); }
 				main.addChild(l2);
 				main.addChild(this);
 				
@@ -196,13 +213,13 @@ package src.oldCode
 				
 				if (rapidShotsLeft > 0)
 				{
-					l3 = new libRapidLaser();
-					l4 = new libRapidLaser();
+					l3 = unpool("rapid");
+					l4 = unpool("rapid");
 				}
 				else
 				{
-					l3 = new Laser();
-					l4 = new Laser();
+					l3 = unpool();
+					l4 = unpool();
 				}
 				l3.x = x;
 				l3.y = y;// * scaleY * sizeModifier;
@@ -224,13 +241,13 @@ package src.oldCode
 				
 				if (rapidShotsLeft > 0)
 				{
-					l5 = new libRapidLaser();
-					l6 = new libRapidLaser();
+					l5 = unpool("rapid");
+					l6 = unpool("rapid");
 				}
 				else
 				{
-					l5 = new Laser();
-					l6 = new Laser();
+					l5 = unpool();
+					l6 = unpool();
 				}
 				l5.x = x;
 				l5.y = y;// * scaleY * sizeModifier;
@@ -247,8 +264,8 @@ package src.oldCode
 			{
 				angle180ShotsLeft --;
 				var l7:Laser;
-				if (rapidShotsLeft > 0){l7 = new libRapidLaser();}
-				else{l7 = new Laser();}
+				if (rapidShotsLeft > 0){l7 = unpool("rapid");}
+				else{l7 = unpool("rapid");}
 				l7.x = x;
 				l7.y = y;
 				l7.init(180, pan);

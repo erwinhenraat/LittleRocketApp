@@ -23,7 +23,7 @@ package src.oldCode
 			var sound:Sound = new LaserSound();
 			var channel:SoundChannel = sound.play(Math.ceil(Math.random() * 50),0,new SoundTransform(1,$pan));
 			rotation = $rot;
-								
+			toRemove = false;
 			var radians:Number = (rotation+90) * (Math.PI / 180);			
 			xMove = (Math.cos(radians) * $speed);
 			yMove = (Math.sin(radians) * $speed);		

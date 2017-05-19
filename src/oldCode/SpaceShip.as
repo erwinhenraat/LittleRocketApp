@@ -36,11 +36,21 @@ package src.oldCode
 				main.addChild(ex);
 								
 				if(main.contains(this))main.removeChild(this);
-				
+							
 				if (this is Enemy) {
 					var newPwr:Boolean = false;
 					var index:int = main.enemies.indexOf(this);
-					main.enemies.splice(index, 1);
+					if(this is SplicerEnemy){
+						main.splicerPool.push(main.enemies[index]);
+						main.enemies.splice(index, 1);
+					}
+					else{
+						main.enemyPool.push(main.enemies[index]);
+						main.enemies.splice(index, 1);	
+					}
+					
+					
+								
 					if(Math.random()*16<1 && main.powerup==null && main.special==null){
 						main.powerup = new PowerUp(main,"special");
 						newPwr = true;
